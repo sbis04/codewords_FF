@@ -1,8 +1,9 @@
 import '../backend/backend.dart';
+import '../field_operatives_view/field_operatives_view_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../game_page/game_page_widget.dart';
+import '../spy_view/spy_view_widget.dart';
 import '../start_screen/start_screen_widget.dart';
 import '../custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,18 +65,36 @@ class _HostPageWidgetState extends State<HostPageWidget> {
               isRedGuessing: false,
               redWordsLeft: 8,
               blueWordsLeft: 9,
+              isRedWinner: false,
+              isBlueWinner: false,
             ),
             'words': initialWords,
           };
           await widget.roomDetails.reference.update(roomUpdateData);
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GamePageWidget(
-                roomCode: widget.roomDetails.code,
+          if (FFAppState().isSpy) {
+            await Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SpyViewWidget(
+                  roomCode: widget.roomDetails.code,
+                  name: widget.roomDetails.host,
+                ),
               ),
-            ),
-          );
+              (r) => false,
+            );
+          } else {
+            await Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FieldOperativesViewWidget(
+                  roomCode: widget.roomDetails.code,
+                  name: widget.roomDetails.host,
+                ),
+              ),
+              (r) => false,
+            );
+          }
+
           setState(() => FFAppState().hasJoinedTeam = false);
 
           final wordsCreateData = createWordsRecordData(

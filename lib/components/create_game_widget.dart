@@ -16,7 +16,6 @@ class CreateGameWidget extends StatefulWidget {
 }
 
 class _CreateGameWidgetState extends State<CreateGameWidget> {
-  PlayersRecord playerDetails;
   RoomRecord roomDetails;
   TextEditingController textController;
 
@@ -91,16 +90,6 @@ class _CreateGameWidgetState extends State<CreateGameWidget> {
                 await roomRecordReference.set(roomCreateData);
                 roomDetails = RoomRecord.getDocumentFromData(
                     roomCreateData, roomRecordReference);
-
-                final playersCreateData = createPlayersRecordData(
-                  name: textController.text,
-                  isTeamSelected: false,
-                );
-                var playersRecordReference =
-                    PlayersRecord.createDoc(roomDetails.reference);
-                await playersRecordReference.set(playersCreateData);
-                playerDetails = PlayersRecord.getDocumentFromData(
-                    playersCreateData, playersRecordReference);
                 await Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

@@ -53,6 +53,14 @@ abstract class RoomRecord implements Built<RoomRecord, RoomRecordBuilder> {
   int get blueWordsLeft;
 
   @nullable
+  @BuiltValueField(wireName: 'is_red_winner')
+  bool get isRedWinner;
+
+  @nullable
+  @BuiltValueField(wireName: 'is_blue_winner')
+  bool get isBlueWinner;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -68,7 +76,9 @@ abstract class RoomRecord implements Built<RoomRecord, RoomRecordBuilder> {
     ..isRedGuessing = false
     ..isBlueGuessing = false
     ..redWordsLeft = 0
-    ..blueWordsLeft = 0;
+    ..blueWordsLeft = 0
+    ..isRedWinner = false
+    ..isBlueWinner = false;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('room');
@@ -100,6 +110,8 @@ Map<String, dynamic> createRoomRecordData({
   bool isBlueGuessing,
   int redWordsLeft,
   int blueWordsLeft,
+  bool isRedWinner,
+  bool isBlueWinner,
 }) =>
     serializers.toFirestore(
         RoomRecord.serializer,
@@ -115,4 +127,6 @@ Map<String, dynamic> createRoomRecordData({
           ..isRedGuessing = isRedGuessing
           ..isBlueGuessing = isBlueGuessing
           ..redWordsLeft = redWordsLeft
-          ..blueWordsLeft = blueWordsLeft));
+          ..blueWordsLeft = blueWordsLeft
+          ..isRedWinner = isRedWinner
+          ..isBlueWinner = isBlueWinner));

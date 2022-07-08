@@ -1,8 +1,9 @@
 import '../backend/backend.dart';
+import '../field_operatives_view/field_operatives_view_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../game_page/game_page_widget.dart';
+import '../spy_view/spy_view_widget.dart';
 import '../start_screen/start_screen_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -81,15 +82,30 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
             visible: playerPageRoomRecord.isStarted ?? true,
             child: FloatingActionButton.extended(
               onPressed: () async {
-                await Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GamePageWidget(
-                      roomCode: widget.roomCode,
+                if (FFAppState().isSpy) {
+                  await Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SpyViewWidget(
+                        roomCode: widget.roomCode,
+                        name: widget.playerName,
+                      ),
                     ),
-                  ),
-                  (r) => false,
-                );
+                    (r) => false,
+                  );
+                } else {
+                  await Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FieldOperativesViewWidget(
+                        roomCode: widget.roomCode,
+                        name: widget.playerName,
+                      ),
+                    ),
+                    (r) => false,
+                  );
+                }
+
                 setState(() => FFAppState().hasJoinedTeam = false);
               },
               backgroundColor: FlutterFlowTheme.of(context).primaryColor,

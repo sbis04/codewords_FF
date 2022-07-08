@@ -103,6 +103,20 @@ class _$RoomRecordSerializer implements StructuredSerializer<RoomRecord> {
         ..add('blueWordsLeft')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.isRedWinner;
+    if (value != null) {
+      result
+        ..add('is_red_winner')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.isBlueWinner;
+    if (value != null) {
+      result
+        ..add('is_blue_winner')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.reference;
     if (value != null) {
       result
@@ -179,6 +193,14 @@ class _$RoomRecordSerializer implements StructuredSerializer<RoomRecord> {
           result.blueWordsLeft = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'is_red_winner':
+          result.isRedWinner = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'is_blue_winner':
+          result.isBlueWinner = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'Document__Reference__Field':
           result.reference = serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -218,6 +240,10 @@ class _$RoomRecord extends RoomRecord {
   @override
   final int blueWordsLeft;
   @override
+  final bool isRedWinner;
+  @override
+  final bool isBlueWinner;
+  @override
   final DocumentReference<Object> reference;
 
   factory _$RoomRecord([void Function(RoomRecordBuilder) updates]) =>
@@ -236,6 +262,8 @@ class _$RoomRecord extends RoomRecord {
       this.isBlueGuessing,
       this.redWordsLeft,
       this.blueWordsLeft,
+      this.isRedWinner,
+      this.isBlueWinner,
       this.reference})
       : super._();
 
@@ -262,6 +290,8 @@ class _$RoomRecord extends RoomRecord {
         isBlueGuessing == other.isBlueGuessing &&
         redWordsLeft == other.redWordsLeft &&
         blueWordsLeft == other.blueWordsLeft &&
+        isRedWinner == other.isRedWinner &&
+        isBlueWinner == other.isBlueWinner &&
         reference == other.reference;
   }
 
@@ -278,18 +308,24 @@ class _$RoomRecord extends RoomRecord {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, code.hashCode),
-                                                    redTeam.hashCode),
-                                                blueTeam.hashCode),
-                                            redSpyMaster.hashCode),
-                                        blueSpyMaster.hashCode),
-                                    host.hashCode),
-                                words.hashCode),
-                            isStarted.hashCode),
-                        isRedGuessing.hashCode),
-                    isBlueGuessing.hashCode),
-                redWordsLeft.hashCode),
-            blueWordsLeft.hashCode),
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(0,
+                                                                code.hashCode),
+                                                            redTeam.hashCode),
+                                                        blueTeam.hashCode),
+                                                    redSpyMaster.hashCode),
+                                                blueSpyMaster.hashCode),
+                                            host.hashCode),
+                                        words.hashCode),
+                                    isStarted.hashCode),
+                                isRedGuessing.hashCode),
+                            isBlueGuessing.hashCode),
+                        redWordsLeft.hashCode),
+                    blueWordsLeft.hashCode),
+                isRedWinner.hashCode),
+            isBlueWinner.hashCode),
         reference.hashCode));
   }
 
@@ -308,6 +344,8 @@ class _$RoomRecord extends RoomRecord {
           ..add('isBlueGuessing', isBlueGuessing)
           ..add('redWordsLeft', redWordsLeft)
           ..add('blueWordsLeft', blueWordsLeft)
+          ..add('isRedWinner', isRedWinner)
+          ..add('isBlueWinner', isBlueWinner)
           ..add('reference', reference))
         .toString();
   }
@@ -369,6 +407,14 @@ class RoomRecordBuilder implements Builder<RoomRecord, RoomRecordBuilder> {
   int get blueWordsLeft => _$this._blueWordsLeft;
   set blueWordsLeft(int blueWordsLeft) => _$this._blueWordsLeft = blueWordsLeft;
 
+  bool _isRedWinner;
+  bool get isRedWinner => _$this._isRedWinner;
+  set isRedWinner(bool isRedWinner) => _$this._isRedWinner = isRedWinner;
+
+  bool _isBlueWinner;
+  bool get isBlueWinner => _$this._isBlueWinner;
+  set isBlueWinner(bool isBlueWinner) => _$this._isBlueWinner = isBlueWinner;
+
   DocumentReference<Object> _reference;
   DocumentReference<Object> get reference => _$this._reference;
   set reference(DocumentReference<Object> reference) =>
@@ -393,6 +439,8 @@ class RoomRecordBuilder implements Builder<RoomRecord, RoomRecordBuilder> {
       _isBlueGuessing = $v.isBlueGuessing;
       _redWordsLeft = $v.redWordsLeft;
       _blueWordsLeft = $v.blueWordsLeft;
+      _isRedWinner = $v.isRedWinner;
+      _isBlueWinner = $v.isBlueWinner;
       _reference = $v.reference;
       _$v = null;
     }
@@ -428,6 +476,8 @@ class RoomRecordBuilder implements Builder<RoomRecord, RoomRecordBuilder> {
               isBlueGuessing: isBlueGuessing,
               redWordsLeft: redWordsLeft,
               blueWordsLeft: blueWordsLeft,
+              isRedWinner: isRedWinner,
+              isBlueWinner: isBlueWinner,
               reference: reference);
     } catch (_) {
       String _$failedField;

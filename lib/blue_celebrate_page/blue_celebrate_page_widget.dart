@@ -26,92 +26,104 @@ class _BlueCelebratePageWidgetState extends State<BlueCelebratePageWidget> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.trophy,
-                        color: Color(0xFFFFB938),
-                        size: 90,
-                      ),
-                      Text(
-                        'WINNER',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Poppins',
-                              color:
-                                  FlutterFlowTheme.of(context).primaryBtnText,
-                              fontSize: 36,
-                            ),
-                      ),
-                      Text(
-                        'Blue Team',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              fontSize: 36,
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            setState(() => FFAppState().words = []);
-                            setState(() => FFAppState().isSpy = false);
-                            setState(() => FFAppState().isSpyViewOn = true);
-                            setState(() => FFAppState().hasJoinedTeam = false);
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 300),
-                                reverseDuration: Duration(milliseconds: 300),
-                                child: StartScreenWidget(),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: FlutterFlowTheme.of(context).primaryColor,
+            ),
+            child: Stack(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.trophy,
+                          color: Color(0xFFFFB938),
+                          size: 90,
+                        ),
+                        Text(
+                          'WINNER',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).primaryBtnText,
+                                fontSize: 36,
                               ),
-                              (r) => false,
-                            );
-                          },
-                          text: 'Start New Game',
-                          options: FFButtonOptions(
-                            width: 200,
-                            height: 50,
-                            color: Color(0x004B39EF),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                            borderSide: BorderSide(
-                              color:
-                                  FlutterFlowTheme.of(context).primaryBtnText,
-                              width: 4,
+                        ),
+                        Text(
+                          'Blue Team',
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              setState(() => FFAppState().words = []);
+                              setState(() => FFAppState().isSpy = false);
+                              setState(() => FFAppState().isSpyViewOn = true);
+                              setState(
+                                  () => FFAppState().hasJoinedTeam = false);
+                              await Navigator.pushAndRemoveUntil(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.fade,
+                                  duration: Duration(milliseconds: 300),
+                                  reverseDuration: Duration(milliseconds: 300),
+                                  child: StartScreenWidget(),
+                                ),
+                                (r) => false,
+                              );
+                            },
+                            text: 'Start New Game',
+                            options: FFButtonOptions(
+                              width: 200,
+                              height: 50,
+                              color: Color(0x004B39EF),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .subtitle2
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                              borderSide: BorderSide(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryBtnText,
+                                width: 4,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: custom_widgets.ConfettiOverlay(
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
                   width: double.infinity,
                   height: double.infinity,
+                  child: custom_widgets.ConfettiOverlay(
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
