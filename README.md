@@ -4,7 +4,7 @@ The famous [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) gam
 
 **Start playing [here](https://app.flutterflow.io/run/Ou9Aw9aXoAI0Qdns5Kdc)!** It's recommended to have at least 6 players (Players: 4-8+).
 
-![](screenshots/codewords_screens.png)
+![Codewords screens](screenshots/codewords_screens_2_rows.png)
 
 ## License
 
