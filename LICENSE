@@ -1,12 +1,4 @@
-# Codewords
-
-The famous [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) game created using [FlutterFlow](https://flutterflow.io/). The app is currently mobile focused.
-
-**Start playing [here](https://app.flutterflow.io/run/Ou9Aw9aXoAI0Qdns5Kdc)!** It's recommended to have at least 6 players (Players: 4-8+).
-
-![](screenshots/codewords_screens.png)
-
-## License
+MIT License
 
 Copyright (c) 2022 Souvik Biswas
 
