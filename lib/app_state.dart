@@ -58,7 +58,7 @@ class FFAppState extends ChangeNotifier {
     _isJoinning = _value;
   }
 
-  String _apiKey = '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';
+  String _apiKey = 'YOUR_OPENAI_KEY_HERE';
   String get apiKey => _apiKey;
   set apiKey(String _value) {
     _apiKey = _value;
