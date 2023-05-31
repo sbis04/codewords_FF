@@ -1,43 +1,55 @@
 import 'dart:async';
 
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'players_record.g.dart';
+class PlayersRecord extends FirestoreRecord {
+  PlayersRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class PlayersRecord
-    implements Built<PlayersRecord, PlayersRecordBuilder> {
-  static Serializer<PlayersRecord> get serializer => _$playersRecordSerializer;
+  // "name" field.
+  String? _name;
+  String get name => _name ?? '';
+  bool hasName() => _name != null;
 
-  @nullable
-  String get name;
+  // "is_team_selected" field.
+  bool? _isTeamSelected;
+  bool get isTeamSelected => _isTeamSelected ?? false;
+  bool hasIsTeamSelected() => _isTeamSelected != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_team_selected')
-  bool get isTeamSelected;
+  // "is_blue" field.
+  bool? _isBlue;
+  bool get isBlue => _isBlue ?? false;
+  bool hasIsBlue() => _isBlue != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_blue')
-  bool get isBlue;
+  // "is_spymaster" field.
+  bool? _isSpymaster;
+  bool get isSpymaster => _isSpymaster ?? false;
+  bool hasIsSpymaster() => _isSpymaster != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_spymaster')
-  bool get isSpymaster;
+  // "uid" field.
+  String? _uid;
+  String get uid => _uid ?? '';
+  bool hasUid() => _uid != null;
 
-  @nullable
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference get parentReference => reference.parent.parent!;
 
-  DocumentReference get parentReference => reference.parent.parent;
+  void _initializeFields() {
+    _name = snapshotData['name'] as String?;
+    _isTeamSelected = snapshotData['is_team_selected'] as bool?;
+    _isBlue = snapshotData['is_blue'] as bool?;
+    _isSpymaster = snapshotData['is_spymaster'] as bool?;
+    _uid = snapshotData['uid'] as String?;
+  }
 
-  static void _initializeBuilder(PlayersRecordBuilder builder) => builder
-    ..name = ''
-    ..isTeamSelected = false
-    ..isBlue = false
-    ..isSpymaster = false;
-
-  static Query<Map<String, dynamic>> collection([DocumentReference parent]) =>
+  static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
           ? parent.collection('players')
           : FirebaseFirestore.instance.collectionGroup('players');
@@ -45,34 +57,45 @@ abstract class PlayersRecord
   static DocumentReference createDoc(DocumentReference parent) =>
       parent.collection('players').doc();
 
-  static Stream<PlayersRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+  static Stream<PlayersRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => PlayersRecord.fromSnapshot(s));
 
-  static Future<PlayersRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+  static Future<PlayersRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => PlayersRecord.fromSnapshot(s));
 
-  PlayersRecord._();
-  factory PlayersRecord([void Function(PlayersRecordBuilder) updates]) =
-      _$PlayersRecord;
+  static PlayersRecord fromSnapshot(DocumentSnapshot snapshot) =>
+      PlayersRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static PlayersRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      PlayersRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'PlayersRecord(reference: ${reference.path}, data: $snapshotData)';
 }
 
 Map<String, dynamic> createPlayersRecordData({
-  String name,
-  bool isTeamSelected,
-  bool isBlue,
-  bool isSpymaster,
-}) =>
-    serializers.toFirestore(
-        PlayersRecord.serializer,
-        PlayersRecord((p) => p
-          ..name = name
-          ..isTeamSelected = isTeamSelected
-          ..isBlue = isBlue
-          ..isSpymaster = isSpymaster));
+  String? name,
+  bool? isTeamSelected,
+  bool? isBlue,
+  bool? isSpymaster,
+  String? uid,
+}) {
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'name': name,
+      'is_team_selected': isTeamSelected,
+      'is_blue': isBlue,
+      'is_spymaster': isSpymaster,
+      'uid': uid,
+    }.withoutNulls,
+  );
+
+  return firestoreData;
+}

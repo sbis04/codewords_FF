@@ -1,132 +1,164 @@
 import 'dart:async';
 
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'room_record.g.dart';
+class RoomRecord extends FirestoreRecord {
+  RoomRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class RoomRecord implements Built<RoomRecord, RoomRecordBuilder> {
-  static Serializer<RoomRecord> get serializer => _$roomRecordSerializer;
+  // "code" field.
+  int? _code;
+  int get code => _code ?? 0;
+  bool hasCode() => _code != null;
 
-  @nullable
-  int get code;
+  // "host" field.
+  String? _host;
+  String get host => _host ?? '';
+  bool hasHost() => _host != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'red_team')
-  BuiltList<String> get redTeam;
+  // "words" field.
+  List<String>? _words;
+  List<String> get words => _words ?? const [];
+  bool hasWords() => _words != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'blue_team')
-  BuiltList<String> get blueTeam;
+  // "is_started" field.
+  bool? _isStarted;
+  bool get isStarted => _isStarted ?? false;
+  bool hasIsStarted() => _isStarted != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'red_spy_master')
-  String get redSpyMaster;
+  // "is_red_guessing" field.
+  bool? _isRedGuessing;
+  bool get isRedGuessing => _isRedGuessing ?? false;
+  bool hasIsRedGuessing() => _isRedGuessing != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'blue_spy_master')
-  String get blueSpyMaster;
+  // "is_blue_guessing" field.
+  bool? _isBlueGuessing;
+  bool get isBlueGuessing => _isBlueGuessing ?? false;
+  bool hasIsBlueGuessing() => _isBlueGuessing != null;
 
-  @nullable
-  String get host;
+  // "redWordsLeft" field.
+  int? _redWordsLeft;
+  int get redWordsLeft => _redWordsLeft ?? 0;
+  bool hasRedWordsLeft() => _redWordsLeft != null;
 
-  @nullable
-  BuiltList<String> get words;
+  // "blueWordsLeft" field.
+  int? _blueWordsLeft;
+  int get blueWordsLeft => _blueWordsLeft ?? 0;
+  bool hasBlueWordsLeft() => _blueWordsLeft != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_started')
-  bool get isStarted;
+  // "is_red_winner" field.
+  bool? _isRedWinner;
+  bool get isRedWinner => _isRedWinner ?? false;
+  bool hasIsRedWinner() => _isRedWinner != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_red_guessing')
-  bool get isRedGuessing;
+  // "is_blue_winner" field.
+  bool? _isBlueWinner;
+  bool get isBlueWinner => _isBlueWinner ?? false;
+  bool hasIsBlueWinner() => _isBlueWinner != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_blue_guessing')
-  bool get isBlueGuessing;
+  // "is_ai_spymaster" field.
+  bool? _isAiSpymaster;
+  bool get isAiSpymaster => _isAiSpymaster ?? false;
+  bool hasIsAiSpymaster() => _isAiSpymaster != null;
 
-  @nullable
-  int get redWordsLeft;
+  // "created_at" field.
+  DateTime? _createdAt;
+  DateTime? get createdAt => _createdAt;
+  bool hasCreatedAt() => _createdAt != null;
 
-  @nullable
-  int get blueWordsLeft;
+  // "current_turn" field.
+  int? _currentTurn;
+  int get currentTurn => _currentTurn ?? 0;
+  bool hasCurrentTurn() => _currentTurn != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_red_winner')
-  bool get isRedWinner;
+  // "clues" field.
+  List<ClueDataStruct>? _clues;
+  List<ClueDataStruct> get clues => _clues ?? const [];
+  bool hasClues() => _clues != null;
 
-  @nullable
-  @BuiltValueField(wireName: 'is_blue_winner')
-  bool get isBlueWinner;
-
-  @nullable
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
-
-  static void _initializeBuilder(RoomRecordBuilder builder) => builder
-    ..code = 0
-    ..redTeam = ListBuilder()
-    ..blueTeam = ListBuilder()
-    ..redSpyMaster = ''
-    ..blueSpyMaster = ''
-    ..host = ''
-    ..words = ListBuilder()
-    ..isStarted = false
-    ..isRedGuessing = false
-    ..isBlueGuessing = false
-    ..redWordsLeft = 0
-    ..blueWordsLeft = 0
-    ..isRedWinner = false
-    ..isBlueWinner = false;
+  void _initializeFields() {
+    _code = snapshotData['code'] as int?;
+    _host = snapshotData['host'] as String?;
+    _words = getDataList(snapshotData['words']);
+    _isStarted = snapshotData['is_started'] as bool?;
+    _isRedGuessing = snapshotData['is_red_guessing'] as bool?;
+    _isBlueGuessing = snapshotData['is_blue_guessing'] as bool?;
+    _redWordsLeft = snapshotData['redWordsLeft'] as int?;
+    _blueWordsLeft = snapshotData['blueWordsLeft'] as int?;
+    _isRedWinner = snapshotData['is_red_winner'] as bool?;
+    _isBlueWinner = snapshotData['is_blue_winner'] as bool?;
+    _isAiSpymaster = snapshotData['is_ai_spymaster'] as bool?;
+    _createdAt = snapshotData['created_at'] as DateTime?;
+    _currentTurn = snapshotData['current_turn'] as int?;
+    _clues = getStructList(
+      snapshotData['clues'],
+      ClueDataStruct.fromMap,
+    );
+  }
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('room');
 
-  static Stream<RoomRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+  static Stream<RoomRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => RoomRecord.fromSnapshot(s));
 
-  static Future<RoomRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+  static Future<RoomRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => RoomRecord.fromSnapshot(s));
 
-  RoomRecord._();
-  factory RoomRecord([void Function(RoomRecordBuilder) updates]) = _$RoomRecord;
+  static RoomRecord fromSnapshot(DocumentSnapshot snapshot) => RoomRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static RoomRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      RoomRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'RoomRecord(reference: ${reference.path}, data: $snapshotData)';
 }
 
 Map<String, dynamic> createRoomRecordData({
-  int code,
-  String redSpyMaster,
-  String blueSpyMaster,
-  String host,
-  bool isStarted,
-  bool isRedGuessing,
-  bool isBlueGuessing,
-  int redWordsLeft,
-  int blueWordsLeft,
-  bool isRedWinner,
-  bool isBlueWinner,
-}) =>
-    serializers.toFirestore(
-        RoomRecord.serializer,
-        RoomRecord((r) => r
-          ..code = code
-          ..redTeam = null
-          ..blueTeam = null
-          ..redSpyMaster = redSpyMaster
-          ..blueSpyMaster = blueSpyMaster
-          ..host = host
-          ..words = null
-          ..isStarted = isStarted
-          ..isRedGuessing = isRedGuessing
-          ..isBlueGuessing = isBlueGuessing
-          ..redWordsLeft = redWordsLeft
-          ..blueWordsLeft = blueWordsLeft
-          ..isRedWinner = isRedWinner
-          ..isBlueWinner = isBlueWinner));
+  int? code,
+  String? host,
+  bool? isStarted,
+  bool? isRedGuessing,
+  bool? isBlueGuessing,
+  int? redWordsLeft,
+  int? blueWordsLeft,
+  bool? isRedWinner,
+  bool? isBlueWinner,
+  bool? isAiSpymaster,
+  DateTime? createdAt,
+  int? currentTurn,
+}) {
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'code': code,
+      'host': host,
+      'is_started': isStarted,
+      'is_red_guessing': isRedGuessing,
+      'is_blue_guessing': isBlueGuessing,
+      'redWordsLeft': redWordsLeft,
+      'blueWordsLeft': blueWordsLeft,
+      'is_red_winner': isRedWinner,
+      'is_blue_winner': isBlueWinner,
+      'is_ai_spymaster': isAiSpymaster,
+      'created_at': createdAt,
+      'current_turn': currentTurn,
+    }.withoutNulls,
+  );
+
+  return firestoreData;
+}

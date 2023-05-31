@@ -2,34 +2,29 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /room/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+      allow delete: if request.auth != null;
     }
 
     match /room/{parent}/players/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+      allow delete: if request.auth != null;
     }
 
     match /{path=**}/players/{document} {
-      allow read: if true;
+      allow read: if request.auth != null;
     }
 
 
-    match /room/{parent}/words/{document} {
-      allow create: if true;
+    match /users/{document} {
+      allow create: if request.auth.uid == document;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow write: if request.auth.uid == document;
+      allow delete: if false;
     }
-
-    match /{path=**}/words/{document} {
-      allow read: if true;
-    }
-
   }
 }

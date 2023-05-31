@@ -18,39 +18,47 @@ class FFButtonOptions {
     this.iconPadding,
     this.borderRadius,
     this.borderSide,
+    this.hoverColor,
+    this.hoverBorderSide,
+    this.hoverTextColor,
+    this.hoverElevation,
   });
 
-  final TextStyle textStyle;
-  final double elevation;
-  final double height;
-  final double width;
-  final EdgeInsetsGeometry padding;
-  final Color color;
-  final Color disabledColor;
-  final Color disabledTextColor;
-  final Color splashColor;
-  final double iconSize;
-  final Color iconColor;
-  final EdgeInsetsGeometry iconPadding;
-  final BorderRadius borderRadius;
-  final BorderSide borderSide;
+  final TextStyle? textStyle;
+  final double? elevation;
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry? padding;
+  final Color? color;
+  final Color? disabledColor;
+  final Color? disabledTextColor;
+  final Color? splashColor;
+  final double? iconSize;
+  final Color? iconColor;
+  final EdgeInsetsGeometry? iconPadding;
+  final BorderRadius? borderRadius;
+  final BorderSide? borderSide;
+  final Color? hoverColor;
+  final BorderSide? hoverBorderSide;
+  final Color? hoverTextColor;
+  final double? hoverElevation;
 }
 
 class FFButtonWidget extends StatefulWidget {
   const FFButtonWidget({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
     this.icon,
     this.iconData,
-    @required this.options,
+    required this.options,
     this.showLoadingIndicator = true,
   }) : super(key: key);
 
   final String text;
-  final Widget icon;
-  final IconData iconData;
-  final Function() onPressed;
+  final Widget? icon;
+  final IconData? iconData;
+  final Function()? onPressed;
   final FFButtonOptions options;
   final bool showLoadingIndicator;
 
@@ -70,68 +78,97 @@ class _FFButtonWidgetState extends State<FFButtonWidget> {
               height: 23,
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  widget.options.textStyle.color ?? Colors.white,
+                  widget.options.textStyle!.color ?? Colors.white,
                 ),
               ),
             ),
           )
         : AutoSizeText(
             widget.text,
-            style: widget.options.textStyle,
+            style: widget.options.textStyle?.withoutColor(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           );
 
-    final onPressed = widget.showLoadingIndicator
-        ? () async {
-            if (loading) {
-              return;
-            }
-            setState(() => loading = true);
-            try {
-              await widget.onPressed();
-            } finally {
-              if (mounted) {
-                setState(() => loading = false);
+    final onPressed = widget.onPressed != null
+        ? (widget.showLoadingIndicator
+            ? () async {
+                if (loading) {
+                  return;
+                }
+                setState(() => loading = true);
+                try {
+                  await widget.onPressed!();
+                } finally {
+                  if (mounted) {
+                    setState(() => loading = false);
+                  }
+                }
               }
-            }
-          }
-        : () => widget.onPressed();
+            : () => widget.onPressed!())
+        : null;
 
     ButtonStyle style = ButtonStyle(
-      shape: MaterialStateProperty.all<OutlinedBorder>(
-        RoundedRectangleBorder(
-          borderRadius:
-              widget.options.borderRadius ?? BorderRadius.circular(8.0),
-          side: widget.options.borderSide ?? BorderSide.none,
-        ),
-      ),
-      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
         (states) {
-          if (states.contains(MaterialState.disabled)) {
-            return widget.options.disabledTextColor;
+          if (states.contains(MaterialState.hovered) &&
+              widget.options.hoverBorderSide != null) {
+            return RoundedRectangleBorder(
+              borderRadius:
+                  widget.options.borderRadius ?? BorderRadius.circular(8),
+              side: widget.options.hoverBorderSide!,
+            );
           }
-          return widget.options.textStyle.color;
+          return RoundedRectangleBorder(
+            borderRadius:
+                widget.options.borderRadius ?? BorderRadius.circular(8),
+            side: widget.options.borderSide ?? BorderSide.none,
+          );
         },
       ),
-      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      foregroundColor: MaterialStateProperty.resolveWith<Color?>(
         (states) {
-          if (states.contains(MaterialState.disabled)) {
+          if (states.contains(MaterialState.disabled) &&
+              widget.options.disabledTextColor != null) {
+            return widget.options.disabledTextColor;
+          }
+          if (states.contains(MaterialState.hovered) &&
+              widget.options.hoverTextColor != null) {
+            return widget.options.hoverTextColor;
+          }
+          return widget.options.textStyle?.color;
+        },
+      ),
+      backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+        (states) {
+          if (states.contains(MaterialState.disabled) &&
+              widget.options.disabledColor != null) {
             return widget.options.disabledColor;
+          }
+          if (states.contains(MaterialState.hovered) &&
+              widget.options.hoverColor != null) {
+            return widget.options.hoverColor;
           }
           return widget.options.color;
         },
       ),
-      overlayColor: MaterialStateProperty.resolveWith<Color>((states) {
+      overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
         if (states.contains(MaterialState.pressed)) {
           return widget.options.splashColor;
         }
         return null;
       }),
       padding: MaterialStateProperty.all(widget.options.padding ??
-          const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0)),
-      elevation:
-          MaterialStateProperty.all<double>(widget.options.elevation ?? 2.0),
+          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0)),
+      elevation: MaterialStateProperty.resolveWith<double?>(
+        (states) {
+          if (states.contains(MaterialState.hovered) &&
+              widget.options.hoverElevation != null) {
+            return widget.options.hoverElevation!;
+          }
+          return widget.options.elevation;
+        },
+      ),
     );
 
     if (widget.icon != null || widget.iconData != null) {
@@ -146,7 +183,7 @@ class _FFButtonWidgetState extends State<FFButtonWidget> {
                   widget.iconData,
                   size: widget.options.iconSize,
                   color: widget.options.iconColor ??
-                      widget.options.textStyle.color,
+                      widget.options.textStyle!.color,
                 ),
           ),
           label: textWidget,
@@ -166,4 +203,36 @@ class _FFButtonWidgetState extends State<FFButtonWidget> {
       ),
     );
   }
+}
+
+extension _WithoutColorExtension on TextStyle {
+  TextStyle withoutColor() => TextStyle(
+        inherit: inherit,
+        color: null,
+        backgroundColor: backgroundColor,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+        letterSpacing: letterSpacing,
+        wordSpacing: wordSpacing,
+        textBaseline: textBaseline,
+        height: height,
+        leadingDistribution: leadingDistribution,
+        locale: locale,
+        foreground: foreground,
+        background: background,
+        shadows: shadows,
+        fontFeatures: fontFeatures,
+        decoration: decoration,
+        decorationColor: decorationColor,
+        decorationStyle: decorationStyle,
+        decorationThickness: decorationThickness,
+        debugLabel: debugLabel,
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        // The _package field is private so unfortunately we can't set it here,
+        // but it's almost always unset anyway.
+        // package: _package,
+        overflow: overflow,
+      );
 }
