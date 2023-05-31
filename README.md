@@ -1,10 +1,20 @@
 # Codewords
 
-The famous [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) game created using [FlutterFlow](https://flutterflow.io/). The app is currently mobile focused.
+The famous [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) game created using [FlutterFlow](https://flutterflow.io/). The app is responsive and adapts to both mobile and desktop screen sizes.
 
-**Start playing [here](https://codewords.flutterflow.app)!** It's recommended to have at least 6 players (Players: 4-8+).
+**Start playing [HERE](https://codewords.flutterflow.app)!** 
 
-![Codewords screens](screenshots/codewords_screens_2_rows.png)
+> It's recommended to have at least 6 players (Players: 4-8+).
+
+![Codewords screens](screenshots/codewords_screens_new.png)
+
+## New: AI Mode
+
+You can now use **AI-based Spymasters** while playing Codewords. That means Codewords is now fun even with less people, as low as just 2 players (one Operative in each team).
+
+> AI Spymasters are powered by [GPT 4](https://openai.com/product/gpt-4).
+
+![Codewords AI Spymaster](screenshots/codewords_ai_mode.png)
 
 ## License
 
