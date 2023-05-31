@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'start_screen_model.dart';
@@ -174,7 +176,31 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                         fontSize: 30.0,
                       ),
                 ),
-                actions: [],
+                actions: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          buttonSize: 45.0,
+                          icon: FaIcon(
+                            FontAwesomeIcons.github,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 28.0,
+                          ),
+                          onPressed: () async {
+                            logFirebaseEvent(
+                                'START_SCREEN_PAGE_github_ICN_ON_TAP');
+                            await launchURL(
+                                'https://github.com/sbis04/codewords_FF');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 centerTitle: true,
                 elevation: 0.0,
               )
@@ -414,15 +440,37 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Codewords',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Codewords',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Poppins',
                                     color: FlutterFlowTheme.of(context)
                                         .primaryBackground,
                                     fontSize: 36.0,
                                   ),
+                            ),
+                            FlutterFlowIconButton(
+                              borderRadius: 20.0,
+                              buttonSize: 55.0,
+                              icon: FaIcon(
+                                FontAwesomeIcons.github,
+                                color: Colors.white,
+                                size: 36.0,
+                              ),
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'START_SCREEN_PAGE_GitHubButton_ON_TAP');
+                                await launchURL(
+                                    'https://github.com/sbis04/codewords_FF');
+                              },
+                            ),
+                          ],
                         ),
                         Expanded(
                           child: Row(

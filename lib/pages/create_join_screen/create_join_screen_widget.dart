@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/game_mode_dialog/game_mode_dialog_widget.dart';
 import '/components/join_game/join_game_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -9,6 +10,7 @@ import 'dart:async';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'create_join_screen_model.dart';
@@ -71,7 +73,31 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                         fontSize: 30.0,
                       ),
                 ),
-                actions: [],
+                actions: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          buttonSize: 45.0,
+                          icon: FaIcon(
+                            FontAwesomeIcons.github,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 28.0,
+                          ),
+                          onPressed: () async {
+                            logFirebaseEvent(
+                                'CREATE_JOIN_SCREEN_github_ICN_ON_TAP');
+                            await launchURL(
+                                'https://github.com/sbis04/codewords_FF');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 centerTitle: true,
                 elevation: 0.0,
               )
@@ -311,13 +337,37 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Codewords',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primary,
-                              fontSize: 36.0,
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Codewords',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Poppins',
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  fontSize: 36.0,
+                                ),
+                          ),
+                          FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 20.0,
+                            buttonSize: 55.0,
+                            icon: FaIcon(
+                              FontAwesomeIcons.github,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 36.0,
                             ),
+                            onPressed: () async {
+                              logFirebaseEvent(
+                                  'CREATE_JOIN_SCREEN_GitHubButton_ON_TAP');
+                              await launchURL(
+                                  'https://github.com/sbis04/codewords_FF');
+                            },
+                          ),
+                        ],
                       ),
                       Expanded(
                         child: Row(
