@@ -2,7 +2,7 @@
 
 The famous [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) game created using [FlutterFlow](https://flutterflow.io/). The app is currently mobile focused.
 
-**Start playing [here](https://app.flutterflow.io/run/Ou9Aw9aXoAI0Qdns5Kdc)!** It's recommended to have at least 6 players (Players: 4-8+).
+**Start playing [here](https://codewords.flutterflow.app)!** It's recommended to have at least 6 players (Players: 4-8+).
 
 ![Codewords screens](screenshots/codewords_screens_2_rows.png)
 
