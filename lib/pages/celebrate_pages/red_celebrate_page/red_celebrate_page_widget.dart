@@ -10,17 +10,16 @@ import 'red_celebrate_page_model.dart';
 export 'red_celebrate_page_model.dart';
 
 class RedCelebratePageWidget extends StatefulWidget {
-  const RedCelebratePageWidget({Key? key}) : super(key: key);
+  const RedCelebratePageWidget({super.key});
 
   @override
-  _RedCelebratePageWidgetState createState() => _RedCelebratePageWidgetState();
+  State<RedCelebratePageWidget> createState() => _RedCelebratePageWidgetState();
 }
 
 class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
   late RedCelebratePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -29,23 +28,20 @@ class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'RedCelebratePage'});
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).alternate,
@@ -81,6 +77,7 @@ class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
                                 color:
                                     FlutterFlowTheme.of(context).primaryBtnText,
                                 fontSize: 36.0,
+                                letterSpacing: 0.0,
                               ),
                         ),
                         Text(
@@ -91,6 +88,7 @@ class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
                                     color: FlutterFlowTheme.of(context)
                                         .primaryBackground,
                                     fontSize: 36.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -101,9 +99,8 @@ class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
                             onPressed: () async {
                               logFirebaseEvent(
                                   'RED_CELEBRATE_START_NEW_GAME_BTN_ON_TAP');
-                              FFAppState().update(() {
-                                FFAppState().words = [];
-                              });
+                              FFAppState().words = [];
+                              FFAppState().update(() {});
 
                               context.pushNamed(
                                 'CreateJoinScreen',
@@ -121,14 +118,14 @@ class _RedCelebratePageWidgetState extends State<RedCelebratePageWidget> {
                               height: 50.0,
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsets.all(0.0),
                               color: Color(0x004B39EF),
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                               elevation: 2.0,

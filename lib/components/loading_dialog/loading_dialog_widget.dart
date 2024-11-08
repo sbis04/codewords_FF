@@ -8,10 +8,10 @@ import 'loading_dialog_model.dart';
 export 'loading_dialog_model.dart';
 
 class LoadingDialogWidget extends StatefulWidget {
-  const LoadingDialogWidget({Key? key}) : super(key: key);
+  const LoadingDialogWidget({super.key});
 
   @override
-  _LoadingDialogWidgetState createState() => _LoadingDialogWidgetState();
+  State<LoadingDialogWidget> createState() => _LoadingDialogWidgetState();
 }
 
 class _LoadingDialogWidgetState extends State<LoadingDialogWidget> {
@@ -28,7 +28,7 @@ class _LoadingDialogWidgetState extends State<LoadingDialogWidget> {
     super.initState();
     _model = createModel(context, () => LoadingDialogModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -40,8 +40,6 @@ class _LoadingDialogWidgetState extends State<LoadingDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
       child: Material(

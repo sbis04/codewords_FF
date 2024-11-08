@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -19,14 +20,14 @@ export 'spy_view_model.dart';
 
 class SpyViewWidget extends StatefulWidget {
   const SpyViewWidget({
-    Key? key,
+    super.key,
     this.roomCode,
-  }) : super(key: key);
+  });
 
   final int? roomCode;
 
   @override
-  _SpyViewWidgetState createState() => _SpyViewWidgetState();
+  State<SpyViewWidget> createState() => _SpyViewWidgetState();
 }
 
 class _SpyViewWidgetState extends State<SpyViewWidget>
@@ -34,48 +35,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
   late SpyViewModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
-  final animationsMap = {
-    'gridViewOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: Offset(-40.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: Offset(43.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -83,26 +44,65 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
     _model = createModel(context, () => SpyViewModel());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'SpyView'});
+    animationsMap.addAll({
+      'gridViewOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: Offset(-40.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: Offset(43.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return StreamBuilder<List<RoomRecord>>(
       stream: queryRoomRecord(
-        queryBuilder: (roomRecord) =>
-            roomRecord.where('code', isEqualTo: widget.roomCode),
+        queryBuilder: (roomRecord) => roomRecord.where(
+          'code',
+          isEqualTo: widget!.roomCode,
+        ),
         singleRecord: true,
       ),
       builder: (context, snapshot) {
@@ -115,7 +115,9 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                 width: 50.0,
                 height: 50.0,
                 child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
                 ),
               ),
             ),
@@ -129,8 +131,9 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
         final spyViewRoomRecord = spyViewRoomRecordList.isNotEmpty
             ? spyViewRoomRecordList.first
             : null;
+
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: Colors.white,
@@ -198,6 +201,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
                                         fontSize: 14.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
                                 ),
@@ -230,16 +234,22 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               StreamBuilder<List<PlayersRecord>>(
                                 stream: queryPlayersRecord(
-                                  parent: spyViewRoomRecord!.reference,
+                                  parent: spyViewRoomRecord?.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: true),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: true,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -253,6 +263,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -277,6 +288,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -308,16 +320,22 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               StreamBuilder<List<PlayersRecord>>(
                                 stream: queryPlayersRecord(
-                                  parent: spyViewRoomRecord!.reference,
+                                  parent: spyViewRoomRecord?.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: false),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: false,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -331,6 +349,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -355,6 +374,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -387,9 +407,11 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
               top: true,
               child: StreamBuilder<List<PlayersRecord>>(
                 stream: queryPlayersRecord(
-                  parent: spyViewRoomRecord!.reference,
-                  queryBuilder: (playersRecord) =>
-                      playersRecord.where('uid', isEqualTo: currentUserUid),
+                  parent: spyViewRoomRecord?.reference,
+                  queryBuilder: (playersRecord) => playersRecord.where(
+                    'uid',
+                    isEqualTo: currentUserUid,
+                  ),
                   singleRecord: true,
                 ),
                 builder: (context, snapshot) {
@@ -400,7 +422,9 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
-                          color: FlutterFlowTheme.of(context).primary,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
                         ),
                       ),
                     );
@@ -415,6 +439,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                       adaptiveViewsPlayersRecordList.isNotEmpty
                           ? adaptiveViewsPlayersRecordList.first
                           : null;
+
                   return Stack(
                     children: [
                       Stack(
@@ -447,11 +472,12 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                   fontFamily: 'Poppins',
                                                   color: Colors.black,
                                                   fontSize: 16.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                           ),
                                           Text(
-                                            widget.roomCode!.toString(),
+                                            widget!.roomCode!.toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -460,6 +486,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .primary,
                                                   fontSize: 16.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                           ),
@@ -492,6 +519,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 30.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                               ),
                                               Padding(
@@ -512,6 +540,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                 'Poppins',
                                                             color: Colors.black,
                                                             fontSize: 14.0,
+                                                            letterSpacing: 0.0,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
@@ -533,14 +562,17 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                       .secondary,
                                                                   fontSize:
                                                                       14.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
                                                                 ),
                                                       ),
                                                     ),
-                                                    if (adaptiveViewsPlayersRecord!
-                                                        .isBlue)
+                                                    if (adaptiveViewsPlayersRecord
+                                                            ?.isBlue ??
+                                                        true)
                                                       Padding(
                                                         padding:
                                                             EdgeInsetsDirectional
@@ -561,6 +593,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                         context)
                                                                     .primary,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -589,6 +623,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                         context)
                                                                     .alternate,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -622,7 +658,9 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                         ],
                                       ),
                                     ),
-                                    if (adaptiveViewsPlayersRecord!.isSpymaster)
+                                    if (adaptiveViewsPlayersRecord
+                                            ?.isSpymaster ??
+                                        true)
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 16.0, 16.0),
@@ -654,6 +692,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     context)
                                                                 .primaryBtnText,
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                                 ),
                                               ],
@@ -678,6 +717,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -700,6 +740,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     context)
                                                                 .primary,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                             ),
                                           ),
@@ -716,6 +757,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.black,
                                                         fontSize: 20.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -732,12 +774,14 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .alternate,
                                                   fontSize: 24.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    if (spyViewRoomRecord!.isRedGuessing)
+                                    if (spyViewRoomRecord?.isRedGuessing ??
+                                        true)
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 16.0, 0.0),
@@ -757,6 +801,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .alternate,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -764,7 +809,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                           ],
                                         ),
                                       ),
-                                    if (spyViewRoomRecord!.isBlueGuessing)
+                                    if (spyViewRoomRecord?.isBlueGuessing ??
+                                        true)
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 16.0, 0.0),
@@ -784,6 +830,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .primary,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -797,7 +844,10 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                       child: Builder(
                                         builder: (context) {
                                           final retrievedWordsSpy =
-                                              spyViewRoomRecord!.words.toList();
+                                              spyViewRoomRecord?.words
+                                                      ?.toList() ??
+                                                  [];
+
                                           return GridView.builder(
                                             padding: EdgeInsets.zero,
                                             gridDelegate:
@@ -912,6 +962,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   ),
                                                                   fontSize:
                                                                       12.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500,
@@ -971,7 +1023,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                 ),
                               ),
                             ),
-                          if (spyViewRoomRecord!.isRedWinner &&
+                          if ((spyViewRoomRecord?.isRedWinner ?? true) &&
                               responsiveVisibility(
                                 context: context,
                                 tabletLandscape: false,
@@ -1009,6 +1061,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .primaryBtnText,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                           Text(
@@ -1021,6 +1074,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .primaryBackground,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                           ),
@@ -1032,9 +1086,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                               onPressed: () async {
                                                 logFirebaseEvent(
                                                     'SPY_VIEW_PAGE_START_NEW_GAME_BTN_ON_TAP');
-                                                FFAppState().update(() {
-                                                  FFAppState().words = [];
-                                                });
+                                                FFAppState().words = [];
+                                                FFAppState().update(() {});
 
                                                 context.goNamed(
                                                   'CreateJoinScreen',
@@ -1057,9 +1110,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 0.0),
                                                 iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
+                                                    EdgeInsets.all(0.0),
                                                 color: Color(0x004B39EF),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
@@ -1067,6 +1118,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -1097,7 +1149,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                 ],
                               ),
                             ),
-                          if (spyViewRoomRecord!.isBlueWinner &&
+                          if ((spyViewRoomRecord?.isBlueWinner ?? true) &&
                               responsiveVisibility(
                                 context: context,
                                 tabletLandscape: false,
@@ -1135,6 +1187,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .primaryBtnText,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                           Text(
@@ -1147,6 +1200,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           context)
                                                       .primaryBackground,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                           ),
@@ -1158,9 +1212,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                               onPressed: () async {
                                                 logFirebaseEvent(
                                                     'SPY_VIEW_PAGE_START_NEW_GAME_BTN_ON_TAP');
-                                                FFAppState().update(() {
-                                                  FFAppState().words = [];
-                                                });
+                                                FFAppState().words = [];
+                                                FFAppState().update(() {});
 
                                                 context.pushNamed(
                                                   'CreateJoinScreen',
@@ -1183,9 +1236,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 0.0),
                                                 iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
+                                                    EdgeInsets.all(0.0),
                                                 color: Color(0x004B39EF),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
@@ -1193,6 +1244,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -1235,8 +1287,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                             Align(
                               alignment: AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    32.0, 32.0, 32.0, 32.0),
+                                padding: EdgeInsets.all(32.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1266,6 +1317,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     context)
                                                                 .primary,
                                                         fontSize: 36.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                                 ),
                                               ),
@@ -1289,29 +1341,29 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                 'Poppins',
                                                             color: Colors.black,
                                                             fontSize: 20.0,
+                                                            letterSpacing: 0.0,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
                                                           ),
                                                     ),
                                                     Text(
-                                                      widget.roomCode!
+                                                      widget!.roomCode!
                                                           .toString(),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                fontSize: 20.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            fontSize: 20.0,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                     ),
                                                   ],
                                                 ),
@@ -1335,6 +1387,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           fontFamily: 'Poppins',
                                                           color: Colors.black,
                                                           fontSize: 18.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1352,13 +1405,15 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     context)
                                                                 .secondary,
                                                         fontSize: 18.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
                                                 ),
                                               ),
-                                              if (adaptiveViewsPlayersRecord!
-                                                  .isBlue)
+                                              if (adaptiveViewsPlayersRecord
+                                                      ?.isBlue ??
+                                                  true)
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(
@@ -1374,6 +1429,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 18.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
@@ -1396,6 +1452,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 18.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
@@ -1417,6 +1474,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   .of(context)
                                                               .primaryText,
                                                           fontSize: 18.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
@@ -1464,6 +1522,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 16.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1504,9 +1563,11 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       child: Builder(
                                                         builder: (context) {
                                                           final retrievedWordsSpy =
-                                                              spyViewRoomRecord!
-                                                                  .words
-                                                                  .toList();
+                                                              spyViewRoomRecord
+                                                                      ?.words
+                                                                      ?.toList() ??
+                                                                  [];
+
                                                           return GridView
                                                               .builder(
                                                             padding:
@@ -1610,6 +1671,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                                     FlutterFlowTheme.of(context).primaryBackground,
                                                                                   ),
                                                                                   fontSize: 18.0,
+                                                                                  letterSpacing: 0.0,
                                                                                   fontWeight: FontWeight.w500,
                                                                                 ),
                                                                           ),
@@ -1665,8 +1727,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                             ),
                                             Container(
                                               width: 1.5,
-                                              height: MediaQuery.of(context)
-                                                      .size
+                                              height: MediaQuery.sizeOf(context)
                                                       .height *
                                                   0.8,
                                               decoration: BoxDecoration(
@@ -1713,6 +1774,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                         'Poppins',
                                                                     fontSize:
                                                                         24.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500,
@@ -1742,6 +1805,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                         .primary,
                                                                     fontSize:
                                                                         32.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                   ),
                                                             ),
                                                           ),
@@ -1765,6 +1830,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                         .black,
                                                                     fontSize:
                                                                         20.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -1786,13 +1853,16 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                       .alternate,
                                                                   fontSize:
                                                                       32.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                    if (spyViewRoomRecord!
-                                                        .isRedGuessing)
+                                                    if (spyViewRoomRecord
+                                                            ?.isRedGuessing ??
+                                                        true)
                                                       Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -1813,6 +1883,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                       .alternate,
                                                                   fontSize:
                                                                       18.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -1820,8 +1892,9 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                           ),
                                                         ],
                                                       ),
-                                                    if (spyViewRoomRecord!
-                                                        .isBlueGuessing)
+                                                    if (spyViewRoomRecord
+                                                            ?.isBlueGuessing ??
+                                                        true)
                                                       Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -1842,6 +1915,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                       .primary,
                                                                   fontSize:
                                                                       18.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -1902,6 +1977,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                           .primary,
                                                                       fontSize:
                                                                           32.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                             ),
@@ -1910,18 +1987,19 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     PlayersRecord>>(
                                                               stream:
                                                                   queryPlayersRecord(
-                                                                parent:
-                                                                    spyViewRoomRecord!
-                                                                        .reference,
-                                                                queryBuilder: (playersRecord) => playersRecord
-                                                                    .where(
-                                                                        'is_team_selected',
-                                                                        isEqualTo:
-                                                                            true)
-                                                                    .where(
-                                                                        'is_blue',
-                                                                        isEqualTo:
-                                                                            true),
+                                                                parent: spyViewRoomRecord
+                                                                    ?.reference,
+                                                                queryBuilder:
+                                                                    (playersRecord) =>
+                                                                        playersRecord
+                                                                            .where(
+                                                                              'is_team_selected',
+                                                                              isEqualTo: true,
+                                                                            )
+                                                                            .where(
+                                                                              'is_blue',
+                                                                              isEqualTo: true,
+                                                                            ),
                                                               ),
                                                               builder: (context,
                                                                   snapshot) {
@@ -1941,6 +2019,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     columnPlayersRecordList =
                                                                     snapshot
                                                                         .data!;
+
                                                                 return Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -1972,6 +2051,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Poppins',
                                                                                   fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
                                                                                   fontWeight: FontWeight.w300,
                                                                                 ),
                                                                           ),
@@ -2012,6 +2092,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                           .alternate,
                                                                       fontSize:
                                                                           32.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                             ),
@@ -2020,18 +2102,19 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     PlayersRecord>>(
                                                               stream:
                                                                   queryPlayersRecord(
-                                                                parent:
-                                                                    spyViewRoomRecord!
-                                                                        .reference,
-                                                                queryBuilder: (playersRecord) => playersRecord
-                                                                    .where(
-                                                                        'is_team_selected',
-                                                                        isEqualTo:
-                                                                            true)
-                                                                    .where(
-                                                                        'is_blue',
-                                                                        isEqualTo:
-                                                                            false),
+                                                                parent: spyViewRoomRecord
+                                                                    ?.reference,
+                                                                queryBuilder:
+                                                                    (playersRecord) =>
+                                                                        playersRecord
+                                                                            .where(
+                                                                              'is_team_selected',
+                                                                              isEqualTo: true,
+                                                                            )
+                                                                            .where(
+                                                                              'is_blue',
+                                                                              isEqualTo: false,
+                                                                            ),
                                                               ),
                                                               builder: (context,
                                                                   snapshot) {
@@ -2051,6 +2134,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                     columnPlayersRecordList =
                                                                     snapshot
                                                                         .data!;
+
                                                                 return Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -2082,6 +2166,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Poppins',
                                                                                   fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
                                                                                   fontWeight: FontWeight.w300,
                                                                                 ),
                                                                           ),
@@ -2118,7 +2203,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                 ),
                               ),
                             ),
-                          if (spyViewRoomRecord!.isBlueWinner &&
+                          if ((spyViewRoomRecord?.isBlueWinner ?? true) &&
                               responsiveVisibility(
                                 context: context,
                                 phone: false,
@@ -2176,6 +2261,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                             context)
                                                         .primaryBackground,
                                                     fontSize: 60.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                     lineHeight: 1.0,
                                                   ),
@@ -2188,9 +2274,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                 onPressed: () async {
                                                   logFirebaseEvent(
                                                       'SPY_VIEW_PAGE_START_NEW_GAME_BTN_ON_TAP');
-                                                  FFAppState().update(() {
-                                                    FFAppState().words = [];
-                                                  });
+                                                  FFAppState().words = [];
+                                                  FFAppState().update(() {});
 
                                                   context.goNamed(
                                                     'CreateJoinScreen',
@@ -2213,9 +2298,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 0.0),
                                                   iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
+                                                      EdgeInsets.all(0.0),
                                                   color: Color(0x004B39EF),
                                                   textStyle: FlutterFlowTheme
                                                           .of(context)
@@ -2224,6 +2307,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.white,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -2256,7 +2340,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                 ],
                               ),
                             ),
-                          if (spyViewRoomRecord!.isRedWinner &&
+                          if ((spyViewRoomRecord?.isRedWinner ?? true) &&
                               responsiveVisibility(
                                 context: context,
                                 phone: false,
@@ -2314,6 +2398,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                             context)
                                                         .primaryBackground,
                                                     fontSize: 60.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                     lineHeight: 1.0,
                                                   ),
@@ -2326,9 +2411,8 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                 onPressed: () async {
                                                   logFirebaseEvent(
                                                       'SPY_VIEW_PAGE_START_NEW_GAME_BTN_ON_TAP');
-                                                  FFAppState().update(() {
-                                                    FFAppState().words = [];
-                                                  });
+                                                  FFAppState().words = [];
+                                                  FFAppState().update(() {});
 
                                                   context.goNamed(
                                                     'CreateJoinScreen',
@@ -2351,9 +2435,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 0.0),
                                                   iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
+                                                      EdgeInsets.all(0.0),
                                                   color: Color(0x004B39EF),
                                                   textStyle: FlutterFlowTheme
                                                           .of(context)
@@ -2362,6 +2444,7 @@ class _SpyViewWidgetState extends State<SpyViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.white,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),

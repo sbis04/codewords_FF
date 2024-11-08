@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_getters_setters
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
@@ -22,29 +23,33 @@ class ClueDataStruct extends FFFirebaseStruct {
   String? _clue;
   String get clue => _clue ?? '';
   set clue(String? val) => _clue = val;
+
   bool hasClue() => _clue != null;
 
   // "turn" field.
   int? _turn;
   int get turn => _turn ?? 0;
   set turn(int? val) => _turn = val;
-  void incrementTurn(int amount) => _turn = turn + amount;
+
+  void incrementTurn(int amount) => turn = turn + amount;
+
   bool hasTurn() => _turn != null;
 
   // "is_for_blue" field.
   bool? _isForBlue;
   bool get isForBlue => _isForBlue ?? false;
   set isForBlue(bool? val) => _isForBlue = val;
+
   bool hasIsForBlue() => _isForBlue != null;
 
   static ClueDataStruct fromMap(Map<String, dynamic> data) => ClueDataStruct(
         clue: data['clue'] as String?,
-        turn: data['turn'] as int?,
+        turn: castToType<int>(data['turn']),
         isForBlue: data['is_for_blue'] as bool?,
       );
 
   static ClueDataStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? ClueDataStruct.fromMap(data) : null;
+      data is Map ? ClueDataStruct.fromMap(data.cast<String, dynamic>()) : null;
 
   Map<String, dynamic> toMap() => {
         'clue': _clue,
@@ -89,6 +94,17 @@ class ClueDataStruct extends FFFirebaseStruct {
 
   @override
   String toString() => 'ClueDataStruct(${toMap()})';
+
+  @override
+  bool operator ==(Object other) {
+    return other is ClueDataStruct &&
+        clue == other.clue &&
+        turn == other.turn &&
+        isForBlue == other.isForBlue;
+  }
+
+  @override
+  int get hashCode => const ListEquality().hash([clue, turn, isForBlue]);
 }
 
 ClueDataStruct createClueDataStruct({
@@ -115,10 +131,13 @@ ClueDataStruct createClueDataStruct({
 ClueDataStruct? updateClueDataStruct(
   ClueDataStruct? clueData, {
   bool clearUnsetFields = true,
+  bool create = false,
 }) =>
     clueData
-      ?..firestoreUtilData =
-          FirestoreUtilData(clearUnsetFields: clearUnsetFields);
+      ?..firestoreUtilData = FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+      );
 
 void addClueDataStructData(
   Map<String, dynamic> firestoreData,
@@ -134,14 +153,17 @@ void addClueDataStructData(
     firestoreData[fieldName] = FieldValue.delete();
     return;
   }
-  if (!forFieldValue && clueData.firestoreUtilData.clearUnsetFields) {
+  final clearFields =
+      !forFieldValue && clueData.firestoreUtilData.clearUnsetFields;
+  if (clearFields) {
     firestoreData[fieldName] = <String, dynamic>{};
   }
   final clueDataData = getClueDataFirestoreData(clueData, forFieldValue);
   final nestedData = clueDataData.map((k, v) => MapEntry('$fieldName.$k', v));
 
-  final create = clueData.firestoreUtilData.create;
-  firestoreData.addAll(create ? mergeNestedFields(nestedData) : nestedData);
+  final mergeFields = clueData.firestoreUtilData.create || clearFields;
+  firestoreData
+      .addAll(mergeFields ? mergeNestedFields(nestedData) : nestedData);
 }
 
 Map<String, dynamic> getClueDataFirestoreData(

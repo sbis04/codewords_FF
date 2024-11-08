@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -85,19 +87,19 @@ class RoomRecord extends FirestoreRecord {
   bool hasClues() => _clues != null;
 
   void _initializeFields() {
-    _code = snapshotData['code'] as int?;
+    _code = castToType<int>(snapshotData['code']);
     _host = snapshotData['host'] as String?;
     _words = getDataList(snapshotData['words']);
     _isStarted = snapshotData['is_started'] as bool?;
     _isRedGuessing = snapshotData['is_red_guessing'] as bool?;
     _isBlueGuessing = snapshotData['is_blue_guessing'] as bool?;
-    _redWordsLeft = snapshotData['redWordsLeft'] as int?;
-    _blueWordsLeft = snapshotData['blueWordsLeft'] as int?;
+    _redWordsLeft = castToType<int>(snapshotData['redWordsLeft']);
+    _blueWordsLeft = castToType<int>(snapshotData['blueWordsLeft']);
     _isRedWinner = snapshotData['is_red_winner'] as bool?;
     _isBlueWinner = snapshotData['is_blue_winner'] as bool?;
     _isAiSpymaster = snapshotData['is_ai_spymaster'] as bool?;
     _createdAt = snapshotData['created_at'] as DateTime?;
-    _currentTurn = snapshotData['current_turn'] as int?;
+    _currentTurn = castToType<int>(snapshotData['current_turn']);
     _clues = getStructList(
       snapshotData['clues'],
       ClueDataStruct.fromMap,
@@ -127,6 +129,14 @@ class RoomRecord extends FirestoreRecord {
   @override
   String toString() =>
       'RoomRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is RoomRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createRoomRecordData({
@@ -161,4 +171,48 @@ Map<String, dynamic> createRoomRecordData({
   );
 
   return firestoreData;
+}
+
+class RoomRecordDocumentEquality implements Equality<RoomRecord> {
+  const RoomRecordDocumentEquality();
+
+  @override
+  bool equals(RoomRecord? e1, RoomRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.code == e2?.code &&
+        e1?.host == e2?.host &&
+        listEquality.equals(e1?.words, e2?.words) &&
+        e1?.isStarted == e2?.isStarted &&
+        e1?.isRedGuessing == e2?.isRedGuessing &&
+        e1?.isBlueGuessing == e2?.isBlueGuessing &&
+        e1?.redWordsLeft == e2?.redWordsLeft &&
+        e1?.blueWordsLeft == e2?.blueWordsLeft &&
+        e1?.isRedWinner == e2?.isRedWinner &&
+        e1?.isBlueWinner == e2?.isBlueWinner &&
+        e1?.isAiSpymaster == e2?.isAiSpymaster &&
+        e1?.createdAt == e2?.createdAt &&
+        e1?.currentTurn == e2?.currentTurn &&
+        listEquality.equals(e1?.clues, e2?.clues);
+  }
+
+  @override
+  int hash(RoomRecord? e) => const ListEquality().hash([
+        e?.code,
+        e?.host,
+        e?.words,
+        e?.isStarted,
+        e?.isRedGuessing,
+        e?.isBlueGuessing,
+        e?.redWordsLeft,
+        e?.blueWordsLeft,
+        e?.isRedWinner,
+        e?.isBlueWinner,
+        e?.isAiSpymaster,
+        e?.createdAt,
+        e?.currentTurn,
+        e?.clues
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is RoomRecord;
 }

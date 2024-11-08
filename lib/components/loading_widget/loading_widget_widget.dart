@@ -8,10 +8,10 @@ import 'loading_widget_model.dart';
 export 'loading_widget_model.dart';
 
 class LoadingWidgetWidget extends StatefulWidget {
-  const LoadingWidgetWidget({Key? key}) : super(key: key);
+  const LoadingWidgetWidget({super.key});
 
   @override
-  _LoadingWidgetWidgetState createState() => _LoadingWidgetWidgetState();
+  State<LoadingWidgetWidget> createState() => _LoadingWidgetWidgetState();
 }
 
 class _LoadingWidgetWidgetState extends State<LoadingWidgetWidget> {
@@ -28,7 +28,7 @@ class _LoadingWidgetWidgetState extends State<LoadingWidgetWidget> {
     super.initState();
     _model = createModel(context, () => LoadingWidgetModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -40,8 +40,6 @@ class _LoadingWidgetWidgetState extends State<LoadingWidgetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: 600.0,
       height: 160.0,

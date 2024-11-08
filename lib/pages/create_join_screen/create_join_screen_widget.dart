@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
-import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,17 +16,16 @@ import 'create_join_screen_model.dart';
 export 'create_join_screen_model.dart';
 
 class CreateJoinScreenWidget extends StatefulWidget {
-  const CreateJoinScreenWidget({Key? key}) : super(key: key);
+  const CreateJoinScreenWidget({super.key});
 
   @override
-  _CreateJoinScreenWidgetState createState() => _CreateJoinScreenWidgetState();
+  State<CreateJoinScreenWidget> createState() => _CreateJoinScreenWidgetState();
 }
 
 class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
   late CreateJoinScreenModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -37,14 +35,15 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'CreateJoinScreen'});
     _model.textController ??= TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    _model.textFieldFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -53,7 +52,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBtnText,
@@ -71,6 +70,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                         fontFamily: 'Poppins',
                         color: FlutterFlowTheme.of(context).primary,
                         fontSize: 30.0,
+                        letterSpacing: 0.0,
                       ),
                 ),
                 actions: [
@@ -140,6 +140,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                 .override(
                                   fontFamily: 'Poppins',
                                   fontSize: 24.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                           ),
@@ -153,6 +154,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                     color: FlutterFlowTheme.of(context)
                                         .primaryText,
                                     fontSize: 24.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                             ),
@@ -188,6 +190,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                       fontFamily: 'Poppins',
                                       color: Color(0xB3000000),
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                               ),
@@ -203,27 +206,25 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                             onPressed: () async {
                               logFirebaseEvent(
                                   'CREATE_JOIN_SCREEN_CREATE_GAME_BTN_ON_TA');
-                              await showAlignedDialog(
+                              await showDialog(
                                 barrierColor:
                                     FlutterFlowTheme.of(context).accent2,
                                 context: context,
-                                isGlobal: true,
-                                avoidOverflow: false,
-                                targetAnchor: AlignmentDirectional(0.0, 0.0)
-                                    .resolve(Directionality.of(context)),
-                                followerAnchor: AlignmentDirectional(0.0, 0.0)
-                                    .resolve(Directionality.of(context)),
                                 builder: (dialogContext) {
-                                  return Material(
-                                    color: Colors.transparent,
+                                  return Dialog(
+                                    elevation: 0,
+                                    insetPadding: EdgeInsets.zero,
+                                    backgroundColor: Colors.transparent,
+                                    alignment: AlignmentDirectional(0.0, 0.0)
+                                        .resolve(Directionality.of(context)),
                                     child: GestureDetector(
-                                      onTap: () => FocusScope.of(context)
-                                          .requestFocus(_unfocusNode),
+                                      onTap: () => FocusScope.of(dialogContext)
+                                          .unfocus(),
                                       child: GameModeDialogWidget(),
                                     ),
                                   );
                                 },
-                              ).then((value) => setState(() {}));
+                              );
                             },
                             text: 'Create Game',
                             options: FFButtonOptions(
@@ -240,6 +241,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
                                     fontSize: 20.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               elevation: 2.0,
@@ -257,26 +259,23 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                         onPressed: () async {
                           logFirebaseEvent(
                               'CREATE_JOIN_SCREEN_JOIN_GAME_BTN_ON_TAP');
-                          FFAppState().update(() {
-                            FFAppState().isVerifyPressed = false;
-                          });
+                          FFAppState().isVerifyPressed = false;
+                          FFAppState().update(() {});
                           await showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             barrierColor: Color(0x00000000),
                             context: context,
-                            builder: (bottomSheetContext) {
+                            builder: (context) {
                               return GestureDetector(
-                                onTap: () => FocusScope.of(context)
-                                    .requestFocus(_unfocusNode),
+                                onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
-                                  padding: MediaQuery.of(bottomSheetContext)
-                                      .viewInsets,
+                                  padding: MediaQuery.viewInsetsOf(context),
                                   child: JoinGameWidget(),
                                 ),
                               );
                             },
-                          ).then((value) => setState(() {}));
+                          ).then((value) => safeSetState(() {}));
                         },
                         text: 'Join Game',
                         options: FFButtonOptions(
@@ -292,6 +291,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                     fontFamily: 'Poppins',
                                     color: FlutterFlowTheme.of(context).primary,
                                     fontSize: 20.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                           elevation: 2.0,
@@ -349,6 +349,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                   fontFamily: 'Poppins',
                                   color: FlutterFlowTheme.of(context).primary,
                                   fontSize: 36.0,
+                                  letterSpacing: 0.0,
                                 ),
                           ),
                           FlutterFlowIconButton(
@@ -386,7 +387,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                     transitionOnUserGestures: true,
                                     child: Image.asset(
                                       'assets/images/spy_logo.png',
-                                      width: MediaQuery.of(context).size.width *
+                                      width: MediaQuery.sizeOf(context).width *
                                           0.25,
                                       fit: BoxFit.contain,
                                     ),
@@ -396,7 +397,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                             ),
                             Spacer(),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              width: MediaQuery.sizeOf(context).width * 0.3,
                               decoration: BoxDecoration(
                                 color: Color(0x00FFFFFF),
                               ),
@@ -417,6 +418,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                               .override(
                                                 fontFamily: 'Poppins',
                                                 fontSize: 32.0,
+                                                letterSpacing: 0.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
                                         ),
@@ -431,6 +433,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                           context)
                                                       .primaryText,
                                                   fontSize: 32.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                           ),
@@ -461,9 +464,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                   'StartScreen',
                                                   context.mounted);
 
-                                              FFAppState().update(() {
-                                                FFAppState().isJoinning = false;
-                                              });
+                                              FFAppState().isJoinning = false;
+                                              FFAppState().update(() {});
                                             },
                                             child: Text(
                                               'Not your name? Change',
@@ -475,6 +477,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                         color:
                                                             Color(0xB3000000),
                                                         fontSize: 14.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -496,42 +499,36 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                 onPressed: () async {
                                                   logFirebaseEvent(
                                                       'CREATE_JOIN_SCREEN_CREATE_GAME_BTN_ON_TA');
-                                                  await showAlignedDialog(
+                                                  await showDialog(
                                                     barrierColor:
                                                         FlutterFlowTheme.of(
                                                                 context)
                                                             .accent2,
                                                     context: context,
-                                                    isGlobal: true,
-                                                    avoidOverflow: false,
-                                                    targetAnchor:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    followerAnchor:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
                                                     builder: (dialogContext) {
-                                                      return Material(
-                                                        color:
+                                                      return Dialog(
+                                                        elevation: 0,
+                                                        insetPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
                                                             Colors.transparent,
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
                                                         child: GestureDetector(
-                                                          onTap: () => FocusScope
-                                                                  .of(context)
-                                                              .requestFocus(
-                                                                  _unfocusNode),
+                                                          onTap: () =>
+                                                              FocusScope.of(
+                                                                      dialogContext)
+                                                                  .unfocus(),
                                                           child:
                                                               GameModeDialogWidget(),
                                                         ),
                                                       );
                                                     },
-                                                  ).then((value) =>
-                                                      setState(() {}));
+                                                  );
                                                 },
                                                 text: 'Create Game',
                                                 options: FFButtonOptions(
@@ -554,6 +551,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                         fontFamily: 'Poppins',
                                                         color: Colors.white,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -574,11 +572,10 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                             onPressed: () async {
                                               logFirebaseEvent(
                                                   'CREATE_JOIN_SCREEN_JOIN_GAME_BTN_ON_TAP');
-                                              FFAppState().update(() {
-                                                FFAppState().isVerifyPressed =
-                                                    false;
-                                                FFAppState().isJoinning = true;
-                                              });
+                                              FFAppState().isVerifyPressed =
+                                                  false;
+                                              FFAppState().isJoinning = true;
+                                              FFAppState().update(() {});
                                             },
                                             text: 'Join Game',
                                             options: FFButtonOptions(
@@ -599,6 +596,7 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                     context)
                                                                 .primary,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -648,10 +646,9 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                   onTap: () async {
                                                     logFirebaseEvent(
                                                         'CREATE_JOIN_SCREEN_Container_dp3uwqxb_ON');
-                                                    FFAppState().update(() {
-                                                      FFAppState().isJoinning =
-                                                          false;
-                                                    });
+                                                    FFAppState().isJoinning =
+                                                        false;
+                                                    FFAppState().update(() {});
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
@@ -700,6 +697,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                         .primary,
                                                                     fontSize:
                                                                         16.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                   ),
                                                             ),
                                                           ),
@@ -723,6 +722,9 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                       child: TextFormField(
                                                         controller: _model
                                                             .textController,
+                                                        focusNode: _model
+                                                            .textFieldFocusNode,
+                                                        autofocus: false,
                                                         obscureText: false,
                                                         decoration:
                                                             InputDecoration(
@@ -739,6 +741,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                         0x984B39EF),
                                                                     fontSize:
                                                                         20.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -756,6 +760,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                         0x7F000000),
                                                                     fontSize:
                                                                         20.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -848,6 +854,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                               fontFamily:
                                                                   'Poppins',
                                                               fontSize: 20.0,
+                                                              letterSpacing:
+                                                                  0.0,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal,
@@ -874,14 +882,13 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                           logFirebaseEvent(
                                                               'CREATE_JOIN_SCREEN_VERIFY_BTN_ON_TAP');
                                                           FFAppState()
-                                                              .update(() {
-                                                            FFAppState()
-                                                                    .isVerifyPressed =
-                                                                true;
-                                                          });
-                                                          setState(() => _model
-                                                                  .firestoreRequestCompleter =
-                                                              null);
+                                                                  .isVerifyPressed =
+                                                              true;
+                                                          FFAppState()
+                                                              .update(() {});
+                                                          safeSetState(() =>
+                                                              _model.firestoreRequestCompleter =
+                                                                  null);
                                                           await _model
                                                               .waitForFirestoreRequestCompleted();
                                                         },
@@ -916,6 +923,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                         .white,
                                                                     fontSize:
                                                                         18.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -946,12 +955,16 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                   RoomRecord>>()
                                                             ..complete(
                                                                 queryRoomRecordOnce(
-                                                              queryBuilder: (roomRecord) =>
-                                                                  roomRecord.where(
-                                                                      'code',
-                                                                      isEqualTo: int.tryParse(_model
-                                                                          .textController
-                                                                          .text)),
+                                                              queryBuilder:
+                                                                  (roomRecord) =>
+                                                                      roomRecord
+                                                                          .where(
+                                                                'code',
+                                                                isEqualTo: int
+                                                                    .tryParse(_model
+                                                                        .textController
+                                                                        .text),
+                                                              ),
                                                               singleRecord:
                                                                   true,
                                                             )))
@@ -965,9 +978,13 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                           height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -986,32 +1003,38 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                             ? buttonRoomRecordList
                                                                 .first
                                                             : null;
+
                                                     return FFButtonWidget(
                                                       onPressed: () async {
                                                         logFirebaseEvent(
                                                             'CREATE_JOIN_SCREEN_PAGE_JOIN_BTN_ON_TAP');
 
-                                                        final playersCreateData =
-                                                            createPlayersRecordData(
-                                                          name:
-                                                              currentUserDisplayName,
-                                                          isTeamSelected: false,
-                                                          uid: currentUserUid,
-                                                        );
                                                         var playersRecordReference =
                                                             PlayersRecord.createDoc(
                                                                 buttonRoomRecord!
                                                                     .reference);
                                                         await playersRecordReference
                                                             .set(
-                                                                playersCreateData);
+                                                                createPlayersRecordData(
+                                                          name:
+                                                              currentUserDisplayName,
+                                                          isTeamSelected: false,
+                                                          uid: currentUserUid,
+                                                        ));
                                                         _model.playerDocumentJoin =
                                                             PlayersRecord
                                                                 .getDocumentFromData(
-                                                                    playersCreateData,
+                                                                    createPlayersRecordData(
+                                                                      name:
+                                                                          currentUserDisplayName,
+                                                                      isTeamSelected:
+                                                                          false,
+                                                                      uid:
+                                                                          currentUserUid,
+                                                                    ),
                                                                     playersRecordReference);
-                                                        if (buttonRoomRecord!
-                                                                .host ==
+                                                        if (buttonRoomRecord
+                                                                ?.host ==
                                                             currentUserUid) {
                                                           context.goNamed(
                                                             'HostPage',
@@ -1043,8 +1066,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                             queryParameters: {
                                                               'roomDetails':
                                                                   serializeParam(
-                                                                buttonRoomRecord!
-                                                                    .reference,
+                                                                buttonRoomRecord
+                                                                    ?.reference,
                                                                 ParamType
                                                                     .DocumentReference,
                                                               ),
@@ -1073,16 +1096,15 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                           );
                                                         }
 
-                                                        FFAppState().update(() {
-                                                          FFAppState()
-                                                                  .isVerifyPressed =
-                                                              false;
-                                                          FFAppState()
-                                                                  .isJoinning =
-                                                              false;
-                                                        });
+                                                        FFAppState()
+                                                                .isVerifyPressed =
+                                                            false;
+                                                        FFAppState()
+                                                            .isJoinning = false;
+                                                        FFAppState()
+                                                            .update(() {});
 
-                                                        setState(() {});
+                                                        safeSetState(() {});
                                                       },
                                                       text: 'Join',
                                                       options: FFButtonOptions(
@@ -1117,6 +1139,8 @@ class _CreateJoinScreenWidgetState extends State<CreateJoinScreenWidget> {
                                                                       .white,
                                                                   fontSize:
                                                                       24.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,

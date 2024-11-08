@@ -9,9 +9,11 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/instant_timer.dart';
+import 'dart:math';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'field_operatives_view_widget.dart' show FieldOperativesViewWidget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class FieldOperativesViewModel extends FlutterFlowModel {
+class FieldOperativesViewModel
+    extends FlutterFlowModel<FieldOperativesViewWidget> {
   ///  State fields for stateful widgets in this page.
 
   InstantTimer? blueAITimer;
@@ -75,10 +78,10 @@ class FieldOperativesViewModel extends FlutterFlowModel {
   // Stores action output result for [Backend Call - API (getClue)] action in Button widget.
   ApiCallResponse? redAIOutputLarge;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     blueAITimer?.cancel();
     redAITimer?.cancel();
@@ -91,7 +94,4 @@ class FieldOperativesViewModel extends FlutterFlowModel {
     blueEndAILargeTimer?.cancel();
     redEndAILargeTimer?.cancel();
   }
-
-  /// Additional helper methods are added here.
-
 }

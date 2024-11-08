@@ -14,23 +14,22 @@ export 'player_page_model.dart';
 
 class PlayerPageWidget extends StatefulWidget {
   const PlayerPageWidget({
-    Key? key,
+    super.key,
     this.roomDetails,
     this.playerDetails,
-  }) : super(key: key);
+  });
 
   final DocumentReference? roomDetails;
   final PlayersRecord? playerDetails;
 
   @override
-  _PlayerPageWidgetState createState() => _PlayerPageWidgetState();
+  State<PlayerPageWidget> createState() => _PlayerPageWidgetState();
 }
 
 class _PlayerPageWidgetState extends State<PlayerPageWidget> {
   late PlayerPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -38,23 +37,20 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
     _model = createModel(context, () => PlayerPageModel());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'PlayerPage'});
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return StreamBuilder<RoomRecord>(
-      stream: RoomRecord.getDocument(widget.roomDetails!),
+      stream: RoomRecord.getDocument(widget!.roomDetails!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -65,15 +61,19 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                 width: 50.0,
                 height: 50.0,
                 child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
                 ),
               ),
             ),
           );
         }
+
         final playerPageRoomRecord = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBtnText,
@@ -81,7 +81,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
               visible: playerPageRoomRecord.isStarted,
               child: StreamBuilder<PlayersRecord>(
                 stream:
-                    PlayersRecord.getDocument(widget.playerDetails!.reference),
+                    PlayersRecord.getDocument(widget!.playerDetails!.reference),
                 builder: (context, snapshot) {
                   // Customize what your widget looks like when it's loading.
                   if (!snapshot.hasData) {
@@ -90,12 +90,16 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
-                          color: FlutterFlowTheme.of(context).primary,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
                         ),
                       ),
                     );
                   }
+
                   final floatingActionButtonPlayersRecord = snapshot.data!;
+
                   return FloatingActionButton.extended(
                     onPressed: () async {
                       logFirebaseEvent(
@@ -129,6 +133,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             color: FlutterFlowTheme.of(context).primaryBtnText,
+                            letterSpacing: 0.0,
                           ),
                     ),
                   );
@@ -151,6 +156,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                             fontFamily: 'Poppins',
                             color: FlutterFlowTheme.of(context).primary,
                             fontSize: 30.0,
+                            letterSpacing: 0.0,
                           ),
                     ),
                     actions: [],
@@ -192,6 +198,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 24.0,
+                                          letterSpacing: 0.0,
                                         ),
                                   ),
                                   InkWell(
@@ -223,6 +230,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
                                             fontSize: 14.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
@@ -239,6 +247,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 14.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
                                         ),
                                   ),
@@ -252,6 +261,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                             color: FlutterFlowTheme.of(context)
                                                 .secondary,
                                             fontSize: 14.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
@@ -271,6 +281,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                           .override(
                                             fontFamily: 'Poppins',
                                             fontSize: 20.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
@@ -283,6 +294,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
                                             fontSize: 20.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
@@ -300,6 +312,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         fontFamily: 'Poppins',
                                         color: Color(0x7F101213),
                                         fontSize: 14.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
                                 ),
@@ -307,8 +320,11 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                               StreamBuilder<List<PlayersRecord>>(
                                 stream: queryPlayersRecord(
                                   parent: playerPageRoomRecord.reference,
-                                  queryBuilder: (playersRecord) => playersRecord
-                                      .where('uid', isEqualTo: currentUserUid),
+                                  queryBuilder: (playersRecord) =>
+                                      playersRecord.where(
+                                    'uid',
+                                    isEqualTo: currentUserUid,
+                                  ),
                                   singleRecord: true,
                                 ),
                                 builder: (context, snapshot) {
@@ -319,8 +335,11 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         width: 50.0,
                                         height: 50.0,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
                                         ),
                                       ),
                                     );
@@ -335,6 +354,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                       columnPlayersRecordList.isNotEmpty
                                           ? columnPlayersRecordList.first
                                           : null;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -358,16 +378,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       logFirebaseEvent(
                                                           'PLAYER_JOIN_RED_TEAM_BTN_ON_TAP');
 
-                                                      final playersUpdateData =
-                                                          createPlayersRecordData(
-                                                        isBlue: false,
-                                                        isSpymaster: false,
-                                                        isTeamSelected: true,
-                                                      );
                                                       await columnPlayersRecord!
                                                           .reference
                                                           .update(
-                                                              playersUpdateData);
+                                                              createPlayersRecordData(
+                                                        isBlue: false,
+                                                        isSpymaster: false,
+                                                        isTeamSelected: true,
+                                                      ));
                                                     },
                                                     text: 'Join Red team',
                                                     options: FFButtonOptions(
@@ -400,6 +418,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     'Poppins',
                                                                 color: Colors
                                                                     .white,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -427,16 +447,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       logFirebaseEvent(
                                                           'PLAYER_JOIN_BLUE_TEAM_BTN_ON_TAP');
 
-                                                      final playersUpdateData =
-                                                          createPlayersRecordData(
-                                                        isBlue: true,
-                                                        isSpymaster: false,
-                                                        isTeamSelected: true,
-                                                      );
                                                       await columnPlayersRecord!
                                                           .reference
                                                           .update(
-                                                              playersUpdateData);
+                                                              createPlayersRecordData(
+                                                        isBlue: true,
+                                                        isSpymaster: false,
+                                                        isTeamSelected: true,
+                                                      ));
                                                     },
                                                     text: 'Join Blue team',
                                                     options: FFButtonOptions(
@@ -469,6 +487,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     'Poppins',
                                                                 color: Colors
                                                                     .white,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -511,16 +531,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       logFirebaseEvent(
                                                           'PLAYER_BECOME_SPY_MASTER_BTN_ON_TAP');
 
-                                                      final playersUpdateData =
-                                                          createPlayersRecordData(
-                                                        isBlue: false,
-                                                        isSpymaster: true,
-                                                        isTeamSelected: true,
-                                                      );
                                                       await columnPlayersRecord!
                                                           .reference
                                                           .update(
-                                                              playersUpdateData);
+                                                              createPlayersRecordData(
+                                                        isBlue: false,
+                                                        isSpymaster: true,
+                                                        isTeamSelected: true,
+                                                      ));
                                                     },
                                                     text: 'become spy master',
                                                     options: FFButtonOptions(
@@ -555,6 +573,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                         context)
                                                                     .alternate,
                                                                 fontSize: 12.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
@@ -584,16 +604,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       logFirebaseEvent(
                                                           'PLAYER_BECOME_SPY_MASTER_BTN_ON_TAP');
 
-                                                      final playersUpdateData =
-                                                          createPlayersRecordData(
-                                                        isBlue: true,
-                                                        isSpymaster: true,
-                                                        isTeamSelected: true,
-                                                      );
                                                       await columnPlayersRecord!
                                                           .reference
                                                           .update(
-                                                              playersUpdateData);
+                                                              createPlayersRecordData(
+                                                        isBlue: true,
+                                                        isSpymaster: true,
+                                                        isTeamSelected: true,
+                                                      ));
                                                     },
                                                     text: 'become spy master',
                                                     options: FFButtonOptions(
@@ -628,6 +646,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                         context)
                                                                     .primary,
                                                                 fontSize: 12.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
@@ -653,8 +673,9 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          if (columnPlayersRecord!
-                                              .isTeamSelected)
+                                          if (columnPlayersRecord
+                                                  ?.isTeamSelected ??
+                                              true)
                                             Expanded(
                                               child: Padding(
                                                 padding: EdgeInsetsDirectional
@@ -665,14 +686,12 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                     logFirebaseEvent(
                                                         'PLAYER_PAGE_PAGE_CHANGE_TEAM_BTN_ON_TAP');
 
-                                                    final playersUpdateData =
-                                                        createPlayersRecordData(
-                                                      isTeamSelected: false,
-                                                    );
                                                     await columnPlayersRecord!
                                                         .reference
                                                         .update(
-                                                            playersUpdateData);
+                                                            createPlayersRecordData(
+                                                      isTeamSelected: false,
+                                                    ));
                                                   },
                                                   text: 'Change Team',
                                                   options: FFButtonOptions(
@@ -697,6 +716,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .primary,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -753,6 +773,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
@@ -760,9 +781,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                 stream: queryPlayersRecord(
                                   parent: playerPageRoomRecord.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: true),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: true,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -772,14 +798,18 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         width: 50.0,
                                         height: 50.0,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
                                         ),
                                       ),
                                     );
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -804,6 +834,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -842,6 +873,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
@@ -849,9 +881,14 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                 stream: queryPlayersRecord(
                                   parent: playerPageRoomRecord.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: false),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: false,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -861,14 +898,18 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         width: 50.0,
                                         height: 50.0,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
                                         ),
                                       ),
                                     );
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -893,6 +934,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -932,8 +974,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                     Align(
                       alignment: AlignmentDirectional(0.0, 0.0),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            32.0, 32.0, 32.0, 32.0),
+                        padding: EdgeInsets.all(32.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -946,6 +987,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                     fontFamily: 'Poppins',
                                     color: FlutterFlowTheme.of(context).primary,
                                     fontSize: 36.0,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                             Expanded(
@@ -982,6 +1024,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                                 ),
                                                 InkWell(
@@ -1021,6 +1064,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1039,6 +1083,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 14.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -1055,6 +1100,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                   .of(context)
                                                               .secondary,
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1077,6 +1123,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           fontSize: 20.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1093,6 +1140,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 20.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -1114,6 +1162,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                           color:
                                                               Color(0x7F101213),
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -1124,9 +1173,10 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                 parent: playerPageRoomRecord
                                                     .reference,
                                                 queryBuilder: (playersRecord) =>
-                                                    playersRecord.where('uid',
-                                                        isEqualTo:
-                                                            currentUserUid),
+                                                    playersRecord.where(
+                                                  'uid',
+                                                  isEqualTo: currentUserUid,
+                                                ),
                                                 singleRecord: true,
                                               ),
                                               builder: (context, snapshot) {
@@ -1155,6 +1205,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                         ? joinningButtonsPlayersRecordList
                                                             .first
                                                         : null;
+
                                                 return Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
@@ -1192,19 +1243,17 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     logFirebaseEvent(
                                                                         'PLAYER_JOIN_RED_TEAM_BTN_ON_TAP');
 
-                                                                    final playersUpdateData =
-                                                                        createPlayersRecordData(
+                                                                    await joinningButtonsPlayersRecord!
+                                                                        .reference
+                                                                        .update(
+                                                                            createPlayersRecordData(
                                                                       isBlue:
                                                                           false,
                                                                       isSpymaster:
                                                                           false,
                                                                       isTeamSelected:
                                                                           true,
-                                                                    );
-                                                                    await joinningButtonsPlayersRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            playersUpdateData);
+                                                                    ));
                                                                   },
                                                                   text:
                                                                       'Join Red team',
@@ -1237,6 +1286,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               'Poppins',
                                                                           color:
                                                                               Colors.white,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.normal,
                                                                         ),
@@ -1272,19 +1323,17 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     logFirebaseEvent(
                                                                         'PLAYER_JOIN_BLUE_TEAM_BTN_ON_TAP');
 
-                                                                    final playersUpdateData =
-                                                                        createPlayersRecordData(
+                                                                    await joinningButtonsPlayersRecord!
+                                                                        .reference
+                                                                        .update(
+                                                                            createPlayersRecordData(
                                                                       isBlue:
                                                                           true,
                                                                       isSpymaster:
                                                                           false,
                                                                       isTeamSelected:
                                                                           true,
-                                                                    );
-                                                                    await joinningButtonsPlayersRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            playersUpdateData);
+                                                                    ));
                                                                   },
                                                                   text:
                                                                       'Join Blue team',
@@ -1317,6 +1366,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               'Poppins',
                                                                           color:
                                                                               Colors.white,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.normal,
                                                                         ),
@@ -1374,19 +1425,17 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     logFirebaseEvent(
                                                                         'PLAYER_BECOME_SPY_MASTER_BTN_ON_TAP');
 
-                                                                    final playersUpdateData =
-                                                                        createPlayersRecordData(
+                                                                    await joinningButtonsPlayersRecord!
+                                                                        .reference
+                                                                        .update(
+                                                                            createPlayersRecordData(
                                                                       isBlue:
                                                                           false,
                                                                       isSpymaster:
                                                                           true,
                                                                       isTeamSelected:
                                                                           true,
-                                                                    );
-                                                                    await joinningButtonsPlayersRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            playersUpdateData);
+                                                                    ));
                                                                   },
                                                                   text:
                                                                       'become spy master',
@@ -1421,6 +1470,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               FlutterFlowTheme.of(context).alternate,
                                                                           fontSize:
                                                                               12.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -1457,19 +1508,17 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                     logFirebaseEvent(
                                                                         'PLAYER_BECOME_SPY_MASTER_BTN_ON_TAP');
 
-                                                                    final playersUpdateData =
-                                                                        createPlayersRecordData(
+                                                                    await joinningButtonsPlayersRecord!
+                                                                        .reference
+                                                                        .update(
+                                                                            createPlayersRecordData(
                                                                       isBlue:
                                                                           true,
                                                                       isSpymaster:
                                                                           true,
                                                                       isTeamSelected:
                                                                           true,
-                                                                    );
-                                                                    await joinningButtonsPlayersRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            playersUpdateData);
+                                                                    ));
                                                                   },
                                                                   text:
                                                                       'become spy master',
@@ -1504,6 +1553,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               FlutterFlowTheme.of(context).primary,
                                                                           fontSize:
                                                                               12.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -1531,8 +1582,9 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       mainAxisSize:
                                                           MainAxisSize.max,
                                                       children: [
-                                                        if (joinningButtonsPlayersRecord!
-                                                            .isTeamSelected)
+                                                        if (joinningButtonsPlayersRecord
+                                                                ?.isTeamSelected ??
+                                                            true)
                                                           Expanded(
                                                             child:
                                                                 FFButtonWidget(
@@ -1541,15 +1593,13 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                 logFirebaseEvent(
                                                                     'PLAYER_PAGE_PAGE_CHANGE_TEAM_BTN_ON_TAP');
 
-                                                                final playersUpdateData =
-                                                                    createPlayersRecordData(
-                                                                  isTeamSelected:
-                                                                      false,
-                                                                );
                                                                 await joinningButtonsPlayersRecord!
                                                                     .reference
                                                                     .update(
-                                                                        playersUpdateData);
+                                                                        createPlayersRecordData(
+                                                                  isTeamSelected:
+                                                                      false,
+                                                                ));
                                                               },
                                                               text:
                                                                   'Change team',
@@ -1585,6 +1635,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                           .primary,
                                                                       fontSize:
                                                                           16.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500,
@@ -1636,8 +1688,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             8.0, 0.0, 16.0, 0.0),
                                         child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
+                                          height: MediaQuery.sizeOf(context)
                                                   .height *
                                               0.6,
                                           decoration: BoxDecoration(
@@ -1672,6 +1723,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                   .of(context)
                                                               .secondaryBackground,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ),
@@ -1686,13 +1738,15 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                           (playersRecord) =>
                                                               playersRecord
                                                                   .where(
-                                                                      'is_team_selected',
-                                                                      isEqualTo:
-                                                                          true)
+                                                                    'is_team_selected',
+                                                                    isEqualTo:
+                                                                        true,
+                                                                  )
                                                                   .where(
-                                                                      'is_blue',
-                                                                      isEqualTo:
-                                                                          true),
+                                                                    'is_blue',
+                                                                    isEqualTo:
+                                                                        true,
+                                                                  ),
                                                     ),
                                                     builder:
                                                         (context, snapshot) {
@@ -1715,6 +1769,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       List<PlayersRecord>
                                                           columnPlayersRecordList =
                                                           snapshot.data!;
+
                                                       return SingleChildScrollView(
                                                         child: Column(
                                                           mainAxisSize:
@@ -1754,6 +1809,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               FlutterFlowTheme.of(context).secondaryBackground,
                                                                           fontSize:
                                                                               16.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.w300,
                                                                         ),
@@ -1796,8 +1853,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 8.0, 0.0),
                                         child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
+                                          height: MediaQuery.sizeOf(context)
                                                   .height *
                                               0.6,
                                           decoration: BoxDecoration(
@@ -1832,6 +1888,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                   .of(context)
                                                               .secondaryBackground,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ),
@@ -1846,13 +1903,15 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                           (playersRecord) =>
                                                               playersRecord
                                                                   .where(
-                                                                      'is_team_selected',
-                                                                      isEqualTo:
-                                                                          true)
+                                                                    'is_team_selected',
+                                                                    isEqualTo:
+                                                                        true,
+                                                                  )
                                                                   .where(
-                                                                      'is_blue',
-                                                                      isEqualTo:
-                                                                          false),
+                                                                    'is_blue',
+                                                                    isEqualTo:
+                                                                        false,
+                                                                  ),
                                                     ),
                                                     builder:
                                                         (context, snapshot) {
@@ -1875,6 +1934,7 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                       List<PlayersRecord>
                                                           columnPlayersRecordList =
                                                           snapshot.data!;
+
                                                       return SingleChildScrollView(
                                                         child: Column(
                                                           mainAxisSize:
@@ -1914,6 +1974,8 @@ class _PlayerPageWidgetState extends State<PlayerPageWidget> {
                                                                               FlutterFlowTheme.of(context).secondaryBackground,
                                                                           fontSize:
                                                                               16.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.w300,
                                                                         ),

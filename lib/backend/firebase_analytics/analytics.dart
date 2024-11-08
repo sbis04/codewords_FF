@@ -13,7 +13,7 @@ void logFirebaseEvent(String eventName, {Map<String?, dynamic>? parameters}) {
 
   parameters ??= {};
   parameters.putIfAbsent(
-      'user', () => currentUserUid.isEmpty ? currentUserUid : 'unset');
+      'user', () => currentUserUid.isEmpty ? 'unset' : currentUserUid);
   parameters.removeWhere((k, v) => k == null || v == null);
   final params = parameters.map((k, v) => MapEntry(k!, v));
 
@@ -29,7 +29,8 @@ void logFirebaseEvent(String eventName, {Map<String?, dynamic>? parameters}) {
     }
   }
 
-  FirebaseAnalytics.instance.logEvent(name: eventName, parameters: params);
+  FirebaseAnalytics.instance
+      .logEvent(name: eventName, parameters: params.cast<String, Object>());
 }
 
 void logFirebaseAuthEvent(User? user, String method) {

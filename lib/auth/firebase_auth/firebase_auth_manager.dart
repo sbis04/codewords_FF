@@ -16,6 +16,7 @@ import 'email_auth.dart';
 import 'firebase_user_provider.dart';
 import 'google_auth.dart';
 import 'jwt_token_auth.dart';
+import 'github_auth.dart';
 
 export '../base_auth_user_provider.dart';
 
@@ -45,10 +46,11 @@ class FirebasePhoneAuthManager extends ChangeNotifier {
 class FirebaseAuthManager extends AuthManager
     with
         EmailSignInManager,
-        AnonymousSignInManager,
-        AppleSignInManager,
         GoogleSignInManager,
+        AppleSignInManager,
+        AnonymousSignInManager,
         JwtSignInManager,
+        GithubSignInManager,
         PhoneSignInManager {
   // Set when using phone verification (after phone number is provided).
   String? _phoneAuthVerificationCode;
@@ -78,6 +80,30 @@ class FirebaseAuthManager extends AuthManager
           SnackBar(
               content: Text(
                   'Too long since most recent sign in. Sign in again before deleting your account.')),
+        );
+      }
+    }
+  }
+
+  @override
+  Future updateEmail({
+    required String email,
+    required BuildContext context,
+  }) async {
+    try {
+      if (!loggedIn) {
+        print('Error: update email attempted with no logged in user!');
+        return;
+      }
+      await currentUser?.updateEmail(email);
+      await updateUserDocument(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  'Too long since most recent sign in. Sign in again before updating your email.')),
         );
       }
     }
@@ -141,6 +167,10 @@ class FirebaseAuthManager extends AuthManager
       _signInOrCreateAccount(context, googleSignInFunc, 'GOOGLE');
 
   @override
+  Future<BaseAuthUser?> signInWithGithub(BuildContext context) =>
+      _signInOrCreateAccount(context, githubSignInFunc, 'GITHUB');
+
+  @override
   Future<BaseAuthUser?> signInWithJwtToken(
     BuildContext context,
     String jwtToken,
@@ -188,7 +218,8 @@ class FirebaseAuthManager extends AuthManager
     // * Finally modify verificationCompleted below as instructed.
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      timeout: Duration(seconds: 5),
+      timeout:
+          Duration(seconds: 0), // Skips Android's default auto-verification
       verificationCompleted: (phoneAuthCredential) async {
         await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
         phoneAuthManager.update(() {
@@ -265,9 +296,16 @@ class FirebaseAuthManager extends AuthManager
           ? null
           : CodewordsFirebaseUser.fromUserCredential(userCredential);
     } on FirebaseAuthException catch (e) {
+      final errorMsg = switch (e.code) {
+        'email-already-in-use' =>
+          'Error: The email is already in use by a different account',
+        'INVALID_LOGIN_CREDENTIALS' =>
+          'Error: The supplied auth credential is incorrect, malformed or has expired',
+        _ => 'Error: ${e.message!}',
+      };
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.message!}')),
+        SnackBar(content: Text(errorMsg)),
       );
       return null;
     }

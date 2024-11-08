@@ -12,10 +12,10 @@ import 'join_game_model.dart';
 export 'join_game_model.dart';
 
 class JoinGameWidget extends StatefulWidget {
-  const JoinGameWidget({Key? key}) : super(key: key);
+  const JoinGameWidget({super.key});
 
   @override
-  _JoinGameWidgetState createState() => _JoinGameWidgetState();
+  State<JoinGameWidget> createState() => _JoinGameWidgetState();
 }
 
 class _JoinGameWidgetState extends State<JoinGameWidget> {
@@ -33,7 +33,9 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
     _model = createModel(context, () => JoinGameModel());
 
     _model.textController ??= TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    _model.textFieldFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -66,6 +68,8 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                   Expanded(
                     child: TextFormField(
                       controller: _model.textController,
+                      focusNode: _model.textFieldFocusNode,
+                      autofocus: false,
                       obscureText: false,
                       decoration: InputDecoration(
                         labelText: 'Room code',
@@ -75,6 +79,7 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                                   fontFamily: 'Poppins',
                                   color: Color(0x7F000000),
                                   fontSize: 16.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                         enabledBorder: UnderlineInputBorder(
@@ -121,6 +126,7 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             fontSize: 16.0,
+                            letterSpacing: 0.0,
                             fontWeight: FontWeight.normal,
                           ),
                       keyboardType: TextInputType.number,
@@ -134,10 +140,10 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                     child: FFButtonWidget(
                       onPressed: () async {
                         logFirebaseEvent('JOIN_GAME_COMP_VERIFY_BTN_ON_TAP');
-                        FFAppState().update(() {
-                          FFAppState().isVerifyPressed = true;
-                        });
-                        setState(() => _model.firestoreRequestCompleter = null);
+                        FFAppState().isVerifyPressed = true;
+                        FFAppState().update(() {});
+                        safeSetState(
+                            () => _model.firestoreRequestCompleter = null);
                         await _model.waitForFirestoreRequestCompleted();
                       },
                       text: 'Verify',
@@ -154,6 +160,7 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                                   fontFamily: 'Poppins',
                                   color: Colors.white,
                                   fontSize: 14.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                         elevation: 2.0,
@@ -174,9 +181,10 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                         Completer<List<RoomRecord>>()
                           ..complete(queryRoomRecordOnce(
                             queryBuilder: (roomRecord) => roomRecord.where(
-                                'code',
-                                isEqualTo:
-                                    int.tryParse(_model.textController.text)),
+                              'code',
+                              isEqualTo:
+                                  int.tryParse(_model.textController.text),
+                            ),
                             singleRecord: true,
                           )))
                     .future,
@@ -188,7 +196,9 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
-                          color: FlutterFlowTheme.of(context).primary,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
                         ),
                       ),
                     );
@@ -201,21 +211,26 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                   final buttonRoomRecord = buttonRoomRecordList.isNotEmpty
                       ? buttonRoomRecordList.first
                       : null;
+
                   return FFButtonWidget(
                     onPressed: () async {
                       logFirebaseEvent('JOIN_GAME_COMP_JOIN_BTN_ON_TAP');
 
-                      final playersCreateData = createPlayersRecordData(
+                      var playersRecordReference =
+                          PlayersRecord.createDoc(buttonRoomRecord!.reference);
+                      await playersRecordReference.set(createPlayersRecordData(
                         name: currentUserDisplayName,
                         isTeamSelected: false,
                         uid: currentUserUid,
-                      );
-                      var playersRecordReference =
-                          PlayersRecord.createDoc(buttonRoomRecord!.reference);
-                      await playersRecordReference.set(playersCreateData);
+                      ));
                       _model.playerDocument = PlayersRecord.getDocumentFromData(
-                          playersCreateData, playersRecordReference);
-                      if (buttonRoomRecord!.host == currentUserUid) {
+                          createPlayersRecordData(
+                            name: currentUserDisplayName,
+                            isTeamSelected: false,
+                            uid: currentUserUid,
+                          ),
+                          playersRecordReference);
+                      if (buttonRoomRecord?.host == currentUserUid) {
                         context.pushNamed(
                           'HostPage',
                           queryParameters: {
@@ -233,7 +248,7 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                           'PlayerPage',
                           queryParameters: {
                             'roomDetails': serializeParam(
-                              buttonRoomRecord!.reference,
+                              buttonRoomRecord?.reference,
                               ParamType.DocumentReference,
                             ),
                             'playerDetails': serializeParam(
@@ -247,11 +262,10 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                         );
                       }
 
-                      FFAppState().update(() {
-                        FFAppState().isVerifyPressed = false;
-                      });
+                      FFAppState().isVerifyPressed = false;
+                      FFAppState().update(() {});
 
-                      setState(() {});
+                      safeSetState(() {});
                     },
                     text: 'Join',
                     options: FFButtonOptions(
@@ -267,6 +281,7 @@ class _JoinGameWidgetState extends State<JoinGameWidget> {
                                 fontFamily: 'Poppins',
                                 color: Colors.white,
                                 fontSize: 20.0,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.normal,
                               ),
                       elevation: 2.0,

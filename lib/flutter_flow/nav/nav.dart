@@ -3,16 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
-import '../flutter_flow_theme.dart';
+import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 
-import '../../auth/base_auth_user_provider.dart';
+import '/auth/base_auth_user_provider.dart';
 
-import '../../index.dart';
-import '../../main.dart';
-import '../lat_lng.dart';
-import '../place.dart';
+import '/index.dart';
+import '/main.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/lat_lng.dart';
+import '/flutter_flow/place.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -53,10 +55,13 @@ class AppStateNotifier extends ChangeNotifier {
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
   void update(BaseAuthUser newUser) {
+    final shouldUpdate =
+        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
+    // No need to update unless the user has changed.
+    if (notifyOnAuthChange && shouldUpdate) {
       notifyListeners();
     }
     // Once again mark the notifier as needing to update on auth change
@@ -98,7 +103,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 'roomDetails': getDoc(['room'], RoomRecord.fromSnapshot),
               },
               builder: (context, params) => HostPageWidget(
-                roomDetails: params.getParam('roomDetails', ParamType.Document),
+                roomDetails: params.getParam(
+                  'roomDetails',
+                  ParamType.Document,
+                ),
               ),
             ),
             FFRoute(
@@ -110,10 +118,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     getDoc(['room', 'players'], PlayersRecord.fromSnapshot),
               },
               builder: (context, params) => PlayerPageWidget(
-                roomDetails: params.getParam('roomDetails',
-                    ParamType.DocumentReference, false, ['room']),
-                playerDetails:
-                    params.getParam('playerDetails', ParamType.Document),
+                roomDetails: params.getParam(
+                  'roomDetails',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['room'],
+                ),
+                playerDetails: params.getParam(
+                  'playerDetails',
+                  ParamType.Document,
+                ),
               ),
             ),
             FFRoute(
@@ -121,7 +135,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'fieldOperativesView',
               requireAuth: true,
               builder: (context, params) => FieldOperativesViewWidget(
-                roomCode: params.getParam('roomCode', ParamType.int),
+                roomCode: params.getParam(
+                  'roomCode',
+                  ParamType.int,
+                ),
               ),
             ),
             FFRoute(
@@ -129,7 +146,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'spyView',
               requireAuth: true,
               builder: (context, params) => SpyViewWidget(
-                roomCode: params.getParam('roomCode', ParamType.int),
+                roomCode: params.getParam(
+                  'roomCode',
+                  ParamType.int,
+                ),
               ),
             ),
             FFRoute(
@@ -225,7 +245,7 @@ extension _GoRouterStateExtensions on GoRouterState {
       extra != null ? extra as Map<String, dynamic> : {};
   Map<String, dynamic> get allParams => <String, dynamic>{}
     ..addAll(pathParameters)
-    ..addAll(queryParameters)
+    ..addAll(uri.queryParameters)
     ..addAll(extraMap);
   TransitionInfo get transitionInfo => extraMap.containsKey(kTransitionInfoKey)
       ? extraMap[kTransitionInfoKey] as TransitionInfo
@@ -244,7 +264,7 @@ class FFParameters {
   // present is the special extra parameter reserved for the transition info.
   bool get isEmpty =>
       state.allParams.isEmpty ||
-      (state.extraMap.length == 1 &&
+      (state.allParams.length == 1 &&
           state.extraMap.containsKey(kTransitionInfoKey));
   bool isAsyncParam(MapEntry<String, dynamic> param) =>
       asyncParams.containsKey(param.key) && param.value is String;
@@ -265,10 +285,11 @@ class FFParameters {
 
   dynamic getParam<T>(
     String paramName,
-    ParamType type, [
+    ParamType type, {
     bool isList = false,
     List<String>? collectionNamePath,
-  ]) {
+    StructBuilder<T>? structBuilder,
+  }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
     }
@@ -281,8 +302,13 @@ class FFParameters {
       return param;
     }
     // Return serialized value.
-    return deserializeParam<T>(param, type, isList,
-        collectionNamePath: collectionNamePath);
+    return deserializeParam<T>(
+      param,
+      type,
+      isList,
+      collectionNamePath: collectionNamePath,
+      structBuilder: structBuilder,
+    );
   }
 }
 
@@ -314,12 +340,13 @@ class FFRoute {
           }
 
           if (requireAuth && !appStateNotifier.loggedIn) {
-            appStateNotifier.setRedirectLocationIfUnset(state.location);
+            appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
             return '/startScreen';
           }
           return null;
         },
         pageBuilder: (context, state) {
+          fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(
@@ -333,8 +360,8 @@ class FFRoute {
                   child: Center(
                     child: Image.asset(
                       'assets/images/spy_logo.png',
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      height: MediaQuery.of(context).size.height * 0.4,
+                      width: MediaQuery.sizeOf(context).width * 0.4,
+                      height: MediaQuery.sizeOf(context).height * 0.4,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -347,13 +374,20 @@ class FFRoute {
                   key: state.pageKey,
                   child: child,
                   transitionDuration: transitionInfo.duration,
-                  transitionsBuilder: PageTransition(
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) =>
+                          PageTransition(
                     type: transitionInfo.transitionType,
                     duration: transitionInfo.duration,
                     reverseDuration: transitionInfo.duration,
                     alignment: transitionInfo.alignment,
                     child: child,
-                  ).transitionsBuilder,
+                  ).buildTransitions(
+                    context,
+                    animation,
+                    secondaryAnimation,
+                    child,
+                  ),
                 )
               : MaterialPage(key: state.pageKey, child: child);
         },
@@ -375,4 +409,34 @@ class TransitionInfo {
   final Alignment? alignment;
 
   static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+}
+
+class RootPageContext {
+  const RootPageContext(this.isRootPage, [this.errorRoute]);
+  final bool isRootPage;
+  final String? errorRoute;
+
+  static bool isInactiveRootPage(BuildContext context) {
+    final rootPageContext = context.read<RootPageContext?>();
+    final isRootPage = rootPageContext?.isRootPage ?? false;
+    final location = GoRouterState.of(context).uri.toString();
+    return isRootPage &&
+        location != '/' &&
+        location != rootPageContext?.errorRoute;
+  }
+
+  static Widget wrap(Widget child, {String? errorRoute}) => Provider.value(
+        value: RootPageContext(true, errorRoute),
+        child: child,
+      );
+}
+
+extension GoRouterLocationExtension on GoRouter {
+  String getCurrentLocation() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    return matchList.uri.toString();
+  }
 }

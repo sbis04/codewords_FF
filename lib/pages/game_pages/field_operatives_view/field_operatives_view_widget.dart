@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/instant_timer.dart';
+import 'dart:math';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -25,14 +26,14 @@ export 'field_operatives_view_model.dart';
 
 class FieldOperativesViewWidget extends StatefulWidget {
   const FieldOperativesViewWidget({
-    Key? key,
+    super.key,
     this.roomCode,
-  }) : super(key: key);
+  });
 
   final int? roomCode;
 
   @override
-  _FieldOperativesViewWidgetState createState() =>
+  State<FieldOperativesViewWidget> createState() =>
       _FieldOperativesViewWidgetState();
 }
 
@@ -41,124 +42,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
   late FieldOperativesViewModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
-  final animationsMap = {
-    'textOnPageLoadAnimation1': AnimationInfo(
-      loop: true,
-      reverse: true,
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          begin: 0.5,
-          end: 0.0,
-        ),
-      ],
-    ),
-    'textOnPageLoadAnimation2': AnimationInfo(
-      loop: true,
-      reverse: true,
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          begin: 0.5,
-          end: 0.0,
-        ),
-      ],
-    ),
-    'gridViewOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: Offset(-40.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 120.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(0.98, 0.98),
-        ),
-        ScaleEffect(
-          curve: Curves.easeIn,
-          delay: 120.ms,
-          duration: 120.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(1.02, 1.02),
-        ),
-      ],
-    ),
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1200.ms,
-          begin: Offset(43.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textOnPageLoadAnimation3': AnimationInfo(
-      loop: true,
-      reverse: true,
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          begin: 0.5,
-          end: 0.0,
-        ),
-      ],
-    ),
-    'textOnPageLoadAnimation4': AnimationInfo(
-      loop: true,
-      reverse: true,
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          begin: 0.5,
-          end: 0.0,
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -167,6 +52,122 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'FieldOperativesView'});
+    animationsMap.addAll({
+      'textOnPageLoadAnimation1': AnimationInfo(
+        loop: true,
+        reverse: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1000.0.ms,
+            begin: 0.5,
+            end: 0.0,
+          ),
+        ],
+      ),
+      'textOnPageLoadAnimation2': AnimationInfo(
+        loop: true,
+        reverse: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1000.0.ms,
+            begin: 0.5,
+            end: 0.0,
+          ),
+        ],
+      ),
+      'gridViewOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: Offset(-40.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnActionTriggerAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onActionTrigger,
+        applyInitialState: true,
+        effectsBuilder: () => [
+          ScaleEffect(
+            curve: Curves.easeOut,
+            delay: 0.0.ms,
+            duration: 120.0.ms,
+            begin: Offset(1.0, 1.0),
+            end: Offset(0.98, 0.98),
+          ),
+          ScaleEffect(
+            curve: Curves.easeIn,
+            delay: 120.0.ms,
+            duration: 120.0.ms,
+            begin: Offset(1.0, 1.0),
+            end: Offset(1.02, 1.02),
+          ),
+        ],
+      ),
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1200.0.ms,
+            begin: Offset(43.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textOnPageLoadAnimation3': AnimationInfo(
+        loop: true,
+        reverse: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1000.0.ms,
+            begin: 0.5,
+            end: 0.0,
+          ),
+        ],
+      ),
+      'textOnPageLoadAnimation4': AnimationInfo(
+        loop: true,
+        reverse: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1000.0.ms,
+            begin: 0.5,
+            end: 0.0,
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -174,14 +175,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -191,8 +191,10 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
 
     return StreamBuilder<List<RoomRecord>>(
       stream: queryRoomRecord(
-        queryBuilder: (roomRecord) =>
-            roomRecord.where('code', isEqualTo: widget.roomCode),
+        queryBuilder: (roomRecord) => roomRecord.where(
+          'code',
+          isEqualTo: widget!.roomCode,
+        ),
         singleRecord: true,
       ),
       builder: (context, snapshot) {
@@ -205,7 +207,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                 width: 50.0,
                 height: 50.0,
                 child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
                 ),
               ),
             ),
@@ -220,8 +224,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
             fieldOperativesViewRoomRecordList.isNotEmpty
                 ? fieldOperativesViewRoomRecordList.first
                 : null;
+
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: Colors.white,
@@ -289,6 +294,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
                                         fontSize: 14.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
                                 ),
@@ -321,17 +327,23 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               StreamBuilder<List<PlayersRecord>>(
                                 stream: queryPlayersRecord(
                                   parent:
-                                      fieldOperativesViewRoomRecord!.reference,
+                                      fieldOperativesViewRoomRecord?.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: true),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: true,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -345,6 +357,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -369,6 +382,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -400,17 +414,23 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
                                         fontSize: 24.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               StreamBuilder<List<PlayersRecord>>(
                                 stream: queryPlayersRecord(
                                   parent:
-                                      fieldOperativesViewRoomRecord!.reference,
+                                      fieldOperativesViewRoomRecord?.reference,
                                   queryBuilder: (playersRecord) => playersRecord
-                                      .where('is_team_selected',
-                                          isEqualTo: true)
-                                      .where('is_blue', isEqualTo: false),
+                                      .where(
+                                        'is_team_selected',
+                                        isEqualTo: true,
+                                      )
+                                      .where(
+                                        'is_blue',
+                                        isEqualTo: false,
+                                      ),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -424,6 +444,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                   }
                                   List<PlayersRecord> columnPlayersRecordList =
                                       snapshot.data!;
+
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: List.generate(
@@ -448,6 +469,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w300,
                                                       ),
@@ -480,9 +502,11 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
               top: true,
               child: StreamBuilder<List<PlayersRecord>>(
                 stream: queryPlayersRecord(
-                  parent: fieldOperativesViewRoomRecord!.reference,
-                  queryBuilder: (playersRecord) =>
-                      playersRecord.where('uid', isEqualTo: currentUserUid),
+                  parent: fieldOperativesViewRoomRecord?.reference,
+                  queryBuilder: (playersRecord) => playersRecord.where(
+                    'uid',
+                    isEqualTo: currentUserUid,
+                  ),
                   singleRecord: true,
                 ),
                 builder: (context, snapshot) {
@@ -493,7 +517,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
-                          color: FlutterFlowTheme.of(context).primary,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
                         ),
                       ),
                     );
@@ -506,6 +532,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                   final stackPlayersRecord = stackPlayersRecordList.isNotEmpty
                       ? stackPlayersRecordList.first
                       : null;
+
                   return Stack(
                     children: [
                       Stack(
@@ -535,6 +562,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                 fontFamily: 'Poppins',
                                                 color: Colors.black,
                                                 fontSize: 16.0,
+                                                letterSpacing: 0.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
                                         ),
@@ -543,7 +571,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 16.0, 0.0),
                                           child: Text(
-                                            widget.roomCode!.toString(),
+                                            widget!.roomCode!.toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -552,6 +580,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .primary,
                                                   fontSize: 16.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                           ),
@@ -584,6 +613,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 30.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                               ),
                                               Row(
@@ -598,6 +628,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           fontFamily: 'Poppins',
                                                           color: Colors.black,
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -616,14 +647,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         context)
                                                                     .secondary,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
                                                               ),
                                                     ),
                                                   ),
-                                                  if (stackPlayersRecord!
-                                                      .isBlue)
+                                                  if (stackPlayersRecord
+                                                          ?.isBlue ??
+                                                      true)
                                                     Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
@@ -646,6 +680,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                       .primary,
                                                                   fontSize:
                                                                       14.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -676,6 +712,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                       .alternate,
                                                                   fontSize:
                                                                       14.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -725,6 +763,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -748,6 +787,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     context)
                                                                 .primary,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                             ),
                                           ),
@@ -764,6 +804,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.black,
                                                         fontSize: 20.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -781,13 +822,15 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .alternate,
                                                   fontSize: 24.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    if (fieldOperativesViewRoomRecord!
-                                        .isRedGuessing)
+                                    if (fieldOperativesViewRoomRecord
+                                            ?.isRedGuessing ??
+                                        true)
                                       Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
@@ -798,10 +841,10 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                             children: [
                                               if (fieldOperativesViewRoomRecord!
                                                       .isAiSpymaster &&
-                                                  (fieldOperativesViewRoomRecord!
-                                                          .currentTurn ==
-                                                      fieldOperativesViewRoomRecord!
-                                                          .clues.length) &&
+                                                  (fieldOperativesViewRoomRecord
+                                                          ?.currentTurn ==
+                                                      fieldOperativesViewRoomRecord
+                                                          ?.clues?.length) &&
                                                   !fieldOperativesViewRoomRecord!
                                                       .clues[
                                                           fieldOperativesViewRoomRecord!
@@ -828,15 +871,16 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ),
                                               if (fieldOperativesViewRoomRecord!
                                                       .isAiSpymaster &&
-                                                  (fieldOperativesViewRoomRecord!
-                                                          .currentTurn !=
-                                                      fieldOperativesViewRoomRecord!
-                                                          .clues.length))
+                                                  (fieldOperativesViewRoomRecord
+                                                          ?.currentTurn !=
+                                                      fieldOperativesViewRoomRecord
+                                                          ?.clues?.length))
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(
@@ -852,6 +896,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ).animateOnPageLoad(animationsMap[
                                                       'textOnPageLoadAnimation1']!),
@@ -879,6 +924,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .alternate,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -896,19 +942,22 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       logFirebaseEvent(
                                                           'FIELD_OPERATIVES_VIEW_END_TURN_BTN_ON_TA');
 
-                                                      final roomUpdateData1 = {
+                                                      await fieldOperativesViewRoomRecord!
+                                                          .reference
+                                                          .update({
                                                         ...createRoomRecordData(
                                                           isRedGuessing: false,
                                                           isBlueGuessing: true,
                                                         ),
-                                                        'current_turn':
-                                                            FieldValue
-                                                                .increment(1),
-                                                      };
-                                                      await fieldOperativesViewRoomRecord!
-                                                          .reference
-                                                          .update(
-                                                              roomUpdateData1);
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'current_turn':
+                                                                FieldValue
+                                                                    .increment(
+                                                                        1),
+                                                          },
+                                                        ),
+                                                      });
                                                       if (fieldOperativesViewRoomRecord!
                                                           .isAiSpymaster) {
                                                         _model.blueAITimer =
@@ -941,6 +990,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   FFAppState()
                                                                       .modelName,
                                                             );
+
                                                             if ((_model
                                                                     .blueAIOutput
                                                                     ?.succeeded ??
@@ -948,35 +998,35 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                               _model.blueAITimer
                                                                   ?.cancel();
 
-                                                              final roomUpdateData2 =
-                                                                  {
-                                                                'clues': FieldValue
-                                                                    .arrayUnion([
-                                                                  getClueDataFirestoreData(
-                                                                    updateClueDataStruct(
-                                                                      ClueDataStruct(
-                                                                        clue: AISpymasterGroup
-                                                                            .getClueCall
-                                                                            .rawClue(
-                                                                              (_model.blueAIOutput?.jsonBody ?? ''),
-                                                                            )
-                                                                            .toString(),
-                                                                        turn: fieldOperativesViewRoomRecord!
-                                                                            .currentTurn,
-                                                                        isForBlue:
-                                                                            true,
-                                                                      ),
-                                                                      clearUnsetFields:
-                                                                          false,
-                                                                    ),
-                                                                    true,
-                                                                  )
-                                                                ]),
-                                                              };
                                                               await fieldOperativesViewRoomRecord!
                                                                   .reference
-                                                                  .update(
-                                                                      roomUpdateData2);
+                                                                  .update({
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'clues':
+                                                                        FieldValue
+                                                                            .arrayUnion([
+                                                                      getClueDataFirestoreData(
+                                                                        updateClueDataStruct(
+                                                                          ClueDataStruct(
+                                                                            clue:
+                                                                                AISpymasterGroup.getClueCall.rawClue(
+                                                                              (_model.blueAIOutput?.jsonBody ?? ''),
+                                                                            ),
+                                                                            turn:
+                                                                                fieldOperativesViewRoomRecord?.currentTurn,
+                                                                            isForBlue:
+                                                                                true,
+                                                                          ),
+                                                                          clearUnsetFields:
+                                                                              false,
+                                                                        ),
+                                                                        true,
+                                                                      )
+                                                                    ]),
+                                                                  },
+                                                                ),
+                                                              });
                                                             }
                                                           },
                                                           startImmediately:
@@ -984,7 +1034,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         );
                                                       }
 
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     },
                                                     text: 'End turn',
                                                     options: FFButtonOptions(
@@ -1018,6 +1068,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -1038,8 +1090,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                           ),
                                         ],
                                       ),
-                                    if (fieldOperativesViewRoomRecord!
-                                        .isBlueGuessing)
+                                    if (fieldOperativesViewRoomRecord
+                                            ?.isBlueGuessing ??
+                                        true)
                                       Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
@@ -1050,10 +1103,10 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                             children: [
                                               if (fieldOperativesViewRoomRecord!
                                                       .isAiSpymaster &&
-                                                  (fieldOperativesViewRoomRecord!
-                                                          .currentTurn ==
-                                                      fieldOperativesViewRoomRecord!
-                                                          .clues.length) &&
+                                                  (fieldOperativesViewRoomRecord
+                                                          ?.currentTurn ==
+                                                      fieldOperativesViewRoomRecord
+                                                          ?.clues?.length) &&
                                                   fieldOperativesViewRoomRecord!
                                                       .clues[
                                                           fieldOperativesViewRoomRecord!
@@ -1080,15 +1133,16 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ),
                                               if (fieldOperativesViewRoomRecord!
                                                       .isAiSpymaster &&
-                                                  (fieldOperativesViewRoomRecord!
-                                                          .currentTurn !=
-                                                      fieldOperativesViewRoomRecord!
-                                                          .clues.length))
+                                                  (fieldOperativesViewRoomRecord
+                                                          ?.currentTurn !=
+                                                      fieldOperativesViewRoomRecord
+                                                          ?.clues?.length))
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(
@@ -1104,6 +1158,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ).animateOnPageLoad(animationsMap[
                                                       'textOnPageLoadAnimation2']!),
@@ -1131,6 +1186,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .primary,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -1148,19 +1204,22 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       logFirebaseEvent(
                                                           'FIELD_OPERATIVES_VIEW_END_TURN_BTN_ON_TA');
 
-                                                      final roomUpdateData1 = {
+                                                      await fieldOperativesViewRoomRecord!
+                                                          .reference
+                                                          .update({
                                                         ...createRoomRecordData(
                                                           isRedGuessing: true,
                                                           isBlueGuessing: false,
                                                         ),
-                                                        'current_turn':
-                                                            FieldValue
-                                                                .increment(1),
-                                                      };
-                                                      await fieldOperativesViewRoomRecord!
-                                                          .reference
-                                                          .update(
-                                                              roomUpdateData1);
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'current_turn':
+                                                                FieldValue
+                                                                    .increment(
+                                                                        1),
+                                                          },
+                                                        ),
+                                                      });
                                                       if (fieldOperativesViewRoomRecord!
                                                           .isAiSpymaster) {
                                                         _model.redAITimer =
@@ -1193,6 +1252,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   FFAppState()
                                                                       .modelName,
                                                             );
+
                                                             if ((_model
                                                                     .redAIOutput
                                                                     ?.succeeded ??
@@ -1200,35 +1260,35 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                               _model.redAITimer
                                                                   ?.cancel();
 
-                                                              final roomUpdateData2 =
-                                                                  {
-                                                                'clues': FieldValue
-                                                                    .arrayUnion([
-                                                                  getClueDataFirestoreData(
-                                                                    updateClueDataStruct(
-                                                                      ClueDataStruct(
-                                                                        clue: AISpymasterGroup
-                                                                            .getClueCall
-                                                                            .rawClue(
-                                                                              (_model.redAIOutput?.jsonBody ?? ''),
-                                                                            )
-                                                                            .toString(),
-                                                                        turn: fieldOperativesViewRoomRecord!
-                                                                            .currentTurn,
-                                                                        isForBlue:
-                                                                            false,
-                                                                      ),
-                                                                      clearUnsetFields:
-                                                                          false,
-                                                                    ),
-                                                                    true,
-                                                                  )
-                                                                ]),
-                                                              };
                                                               await fieldOperativesViewRoomRecord!
                                                                   .reference
-                                                                  .update(
-                                                                      roomUpdateData2);
+                                                                  .update({
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'clues':
+                                                                        FieldValue
+                                                                            .arrayUnion([
+                                                                      getClueDataFirestoreData(
+                                                                        updateClueDataStruct(
+                                                                          ClueDataStruct(
+                                                                            clue:
+                                                                                AISpymasterGroup.getClueCall.rawClue(
+                                                                              (_model.redAIOutput?.jsonBody ?? ''),
+                                                                            ),
+                                                                            turn:
+                                                                                fieldOperativesViewRoomRecord?.currentTurn,
+                                                                            isForBlue:
+                                                                                false,
+                                                                          ),
+                                                                          clearUnsetFields:
+                                                                              false,
+                                                                        ),
+                                                                        true,
+                                                                      )
+                                                                    ]),
+                                                                  },
+                                                                ),
+                                                              });
                                                             }
                                                           },
                                                           startImmediately:
@@ -1236,7 +1296,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         );
                                                       }
 
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     },
                                                     text: 'End turn',
                                                     options: FFButtonOptions(
@@ -1270,6 +1330,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -1296,12 +1358,14 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                       child: Builder(
                                         builder: (context) {
                                           final retrievedWords =
-                                              fieldOperativesViewRoomRecord!
-                                                  .words
-                                                  .toList();
+                                              fieldOperativesViewRoomRecord
+                                                      ?.words
+                                                      ?.toList() ??
+                                                  [];
                                           if (retrievedWords.isEmpty) {
                                             return LoadingWidgetWidget();
                                           }
+
                                           return GridView.builder(
                                             padding: EdgeInsets.zero,
                                             gridDelegate:
@@ -1365,8 +1429,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             'n') {
                                                           if (fieldOperativesViewRoomRecord!
                                                               .isRedGuessing) {
-                                                            final roomUpdateData1 =
-                                                                {
+                                                            await fieldOperativesViewRoomRecord!
+                                                                .reference
+                                                                .update({
                                                               ...createRoomRecordData(
                                                                 redWordsLeft:
                                                                     getJsonField(
@@ -1385,17 +1450,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 isBlueGuessing:
                                                                     true,
                                                               ),
-                                                              'words': _model
-                                                                  .updatedWordsList,
-                                                              'current_turn':
-                                                                  FieldValue
-                                                                      .increment(
-                                                                          1),
-                                                            };
-                                                            await fieldOperativesViewRoomRecord!
-                                                                .reference
-                                                                .update(
-                                                                    roomUpdateData1);
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'words': _model
+                                                                      .updatedWordsList,
+                                                                  'current_turn':
+                                                                      FieldValue
+                                                                          .increment(
+                                                                              1),
+                                                                },
+                                                              ),
+                                                            });
                                                             if (fieldOperativesViewRoomRecord!
                                                                 .isAiSpymaster) {
                                                               _model.redNeutralAITimer =
@@ -1425,6 +1490,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         FFAppState()
                                                                             .modelName,
                                                                   );
+
                                                                   if ((_model
                                                                           .redNeutralAIOutput
                                                                           ?.succeeded ??
@@ -1433,33 +1499,30 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         .redNeutralAITimer
                                                                         ?.cancel();
 
-                                                                    final roomUpdateData2 =
-                                                                        {
-                                                                      'clues':
-                                                                          FieldValue
-                                                                              .arrayUnion([
-                                                                        getClueDataFirestoreData(
-                                                                          updateClueDataStruct(
-                                                                            ClueDataStruct(
-                                                                              clue: AISpymasterGroup.getClueCall
-                                                                                  .rawClue(
-                                                                                    (_model.redNeutralAIOutput?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString(),
-                                                                              turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                              isForBlue: true,
-                                                                            ),
-                                                                            clearUnsetFields:
-                                                                                false,
-                                                                          ),
-                                                                          true,
-                                                                        )
-                                                                      ]),
-                                                                    };
                                                                     await fieldOperativesViewRoomRecord!
                                                                         .reference
-                                                                        .update(
-                                                                            roomUpdateData2);
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'clues':
+                                                                              FieldValue.arrayUnion([
+                                                                            getClueDataFirestoreData(
+                                                                              updateClueDataStruct(
+                                                                                ClueDataStruct(
+                                                                                  clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                    (_model.redNeutralAIOutput?.jsonBody ?? ''),
+                                                                                  ),
+                                                                                  turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                  isForBlue: true,
+                                                                                ),
+                                                                                clearUnsetFields: false,
+                                                                              ),
+                                                                              true,
+                                                                            )
+                                                                          ]),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                   }
                                                                 },
                                                                 startImmediately:
@@ -1467,8 +1530,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                               );
                                                             }
                                                           } else {
-                                                            final roomUpdateData3 =
-                                                                {
+                                                            await fieldOperativesViewRoomRecord!
+                                                                .reference
+                                                                .update({
                                                               ...createRoomRecordData(
                                                                 redWordsLeft:
                                                                     getJsonField(
@@ -1487,17 +1551,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 isBlueGuessing:
                                                                     false,
                                                               ),
-                                                              'words': _model
-                                                                  .updatedWordsList,
-                                                              'current_turn':
-                                                                  FieldValue
-                                                                      .increment(
-                                                                          1),
-                                                            };
-                                                            await fieldOperativesViewRoomRecord!
-                                                                .reference
-                                                                .update(
-                                                                    roomUpdateData3);
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'words': _model
+                                                                      .updatedWordsList,
+                                                                  'current_turn':
+                                                                      FieldValue
+                                                                          .increment(
+                                                                              1),
+                                                                },
+                                                              ),
+                                                            });
                                                             if (fieldOperativesViewRoomRecord!
                                                                 .isAiSpymaster) {
                                                               _model.blueNeutralAITimer =
@@ -1527,37 +1591,35 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         FFAppState()
                                                                             .modelName,
                                                                   );
+
                                                                   if ((_model
                                                                           .blueNeutralAIOutput
                                                                           ?.succeeded ??
                                                                       true)) {
-                                                                    final roomUpdateData4 =
-                                                                        {
-                                                                      'clues':
-                                                                          FieldValue
-                                                                              .arrayUnion([
-                                                                        getClueDataFirestoreData(
-                                                                          updateClueDataStruct(
-                                                                            ClueDataStruct(
-                                                                              clue: AISpymasterGroup.getClueCall
-                                                                                  .rawClue(
-                                                                                    (_model.blueNeutralAIOutput?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString(),
-                                                                              turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                              isForBlue: false,
-                                                                            ),
-                                                                            clearUnsetFields:
-                                                                                false,
-                                                                          ),
-                                                                          true,
-                                                                        )
-                                                                      ]),
-                                                                    };
                                                                     await fieldOperativesViewRoomRecord!
                                                                         .reference
-                                                                        .update(
-                                                                            roomUpdateData4);
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'clues':
+                                                                              FieldValue.arrayUnion([
+                                                                            getClueDataFirestoreData(
+                                                                              updateClueDataStruct(
+                                                                                ClueDataStruct(
+                                                                                  clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                    (_model.blueNeutralAIOutput?.jsonBody ?? ''),
+                                                                                  ),
+                                                                                  turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                  isForBlue: false,
+                                                                                ),
+                                                                                clearUnsetFields: false,
+                                                                              ),
+                                                                              true,
+                                                                            )
+                                                                          ]),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     _model
                                                                         .blueNeutralAITimer
                                                                         ?.cancel();
@@ -1574,8 +1636,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                               'r') {
                                                             if (fieldOperativesViewRoomRecord!
                                                                 .isRedGuessing) {
-                                                              final roomUpdateData5 =
-                                                                  {
+                                                              await fieldOperativesViewRoomRecord!
+                                                                  .reference
+                                                                  .update({
                                                                 ...createRoomRecordData(
                                                                   redWordsLeft:
                                                                       getJsonField(
@@ -1590,16 +1653,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     r'''$.blue''',
                                                                   ),
                                                                 ),
-                                                                'words': _model
-                                                                    .updatedWordsList,
-                                                              };
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'words': _model
+                                                                        .updatedWordsList,
+                                                                  },
+                                                                ),
+                                                              });
+                                                            } else {
                                                               await fieldOperativesViewRoomRecord!
                                                                   .reference
-                                                                  .update(
-                                                                      roomUpdateData5);
-                                                            } else {
-                                                              final roomUpdateData6 =
-                                                                  {
+                                                                  .update({
                                                                 ...createRoomRecordData(
                                                                   redWordsLeft:
                                                                       getJsonField(
@@ -1618,17 +1682,16 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   isBlueGuessing:
                                                                       false,
                                                                 ),
-                                                                'words': _model
-                                                                    .updatedWordsList,
-                                                                'current_turn':
-                                                                    FieldValue
-                                                                        .increment(
-                                                                            1),
-                                                              };
-                                                              await fieldOperativesViewRoomRecord!
-                                                                  .reference
-                                                                  .update(
-                                                                      roomUpdateData6);
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'words': _model
+                                                                        .updatedWordsList,
+                                                                    'current_turn':
+                                                                        FieldValue
+                                                                            .increment(1),
+                                                                  },
+                                                                ),
+                                                              });
                                                               if (fieldOperativesViewRoomRecord!
                                                                   .isAiSpymaster) {
                                                                 _model.redEndAITimer =
@@ -1657,6 +1720,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           FFAppState()
                                                                               .modelName,
                                                                     );
+
                                                                     if ((_model
                                                                             .redEndAIOutput
                                                                             ?.succeeded ??
@@ -1665,31 +1729,30 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .redEndAITimer
                                                                           ?.cancel();
 
-                                                                      final roomUpdateData7 =
-                                                                          {
-                                                                        'clues':
-                                                                            FieldValue.arrayUnion([
-                                                                          getClueDataFirestoreData(
-                                                                            updateClueDataStruct(
-                                                                              ClueDataStruct(
-                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                    .rawClue(
-                                                                                      (_model.redEndAIOutput?.jsonBody ?? ''),
-                                                                                    )
-                                                                                    .toString(),
-                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                isForBlue: false,
-                                                                              ),
-                                                                              clearUnsetFields: false,
-                                                                            ),
-                                                                            true,
-                                                                          )
-                                                                        ]),
-                                                                      };
                                                                       await fieldOperativesViewRoomRecord!
                                                                           .reference
-                                                                          .update(
-                                                                              roomUpdateData7);
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'clues':
+                                                                                FieldValue.arrayUnion([
+                                                                              getClueDataFirestoreData(
+                                                                                updateClueDataStruct(
+                                                                                  ClueDataStruct(
+                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                      (_model.redEndAIOutput?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                    isForBlue: false,
+                                                                                  ),
+                                                                                  clearUnsetFields: false,
+                                                                                ),
+                                                                                true,
+                                                                              )
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
                                                                     }
                                                                   },
                                                                   startImmediately:
@@ -1700,8 +1763,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           } else {
                                                             if (fieldOperativesViewRoomRecord!
                                                                 .isRedGuessing) {
-                                                              final roomUpdateData8 =
-                                                                  {
+                                                              await fieldOperativesViewRoomRecord!
+                                                                  .reference
+                                                                  .update({
                                                                 ...createRoomRecordData(
                                                                   redWordsLeft:
                                                                       getJsonField(
@@ -1720,17 +1784,16 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   isBlueGuessing:
                                                                       true,
                                                                 ),
-                                                                'words': _model
-                                                                    .updatedWordsList,
-                                                                'current_turn':
-                                                                    FieldValue
-                                                                        .increment(
-                                                                            1),
-                                                              };
-                                                              await fieldOperativesViewRoomRecord!
-                                                                  .reference
-                                                                  .update(
-                                                                      roomUpdateData8);
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'words': _model
+                                                                        .updatedWordsList,
+                                                                    'current_turn':
+                                                                        FieldValue
+                                                                            .increment(1),
+                                                                  },
+                                                                ),
+                                                              });
                                                               if (fieldOperativesViewRoomRecord!
                                                                   .isAiSpymaster) {
                                                                 _model.blueEndAITimer =
@@ -1759,6 +1822,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           FFAppState()
                                                                               .modelName,
                                                                     );
+
                                                                     if ((_model
                                                                             .blueEndAIOutput
                                                                             ?.succeeded ??
@@ -1767,31 +1831,30 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .blueEndAITimer
                                                                           ?.cancel();
 
-                                                                      final roomUpdateData9 =
-                                                                          {
-                                                                        'clues':
-                                                                            FieldValue.arrayUnion([
-                                                                          getClueDataFirestoreData(
-                                                                            updateClueDataStruct(
-                                                                              ClueDataStruct(
-                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                    .rawClue(
-                                                                                      (_model.blueEndAIOutput?.jsonBody ?? ''),
-                                                                                    )
-                                                                                    .toString(),
-                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                isForBlue: true,
-                                                                              ),
-                                                                              clearUnsetFields: false,
-                                                                            ),
-                                                                            true,
-                                                                          )
-                                                                        ]),
-                                                                      };
                                                                       await fieldOperativesViewRoomRecord!
                                                                           .reference
-                                                                          .update(
-                                                                              roomUpdateData9);
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'clues':
+                                                                                FieldValue.arrayUnion([
+                                                                              getClueDataFirestoreData(
+                                                                                updateClueDataStruct(
+                                                                                  ClueDataStruct(
+                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                      (_model.blueEndAIOutput?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                    isForBlue: true,
+                                                                                  ),
+                                                                                  clearUnsetFields: false,
+                                                                                ),
+                                                                                true,
+                                                                              )
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
                                                                     }
                                                                   },
                                                                   startImmediately:
@@ -1799,8 +1862,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 );
                                                               }
                                                             } else {
-                                                              final roomUpdateData10 =
-                                                                  {
+                                                              await fieldOperativesViewRoomRecord!
+                                                                  .reference
+                                                                  .update({
                                                                 ...createRoomRecordData(
                                                                   redWordsLeft:
                                                                       getJsonField(
@@ -1815,13 +1879,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     r'''$.blue''',
                                                                   ),
                                                                 ),
-                                                                'words': _model
-                                                                    .updatedWordsList,
-                                                              };
-                                                              await fieldOperativesViewRoomRecord!
-                                                                  .reference
-                                                                  .update(
-                                                                      roomUpdateData10);
+                                                                ...mapToFirestore(
+                                                                  {
+                                                                    'words': _model
+                                                                        .updatedWordsList,
+                                                                  },
+                                                                ),
+                                                              });
                                                             }
                                                           }
                                                         }
@@ -1842,30 +1906,26 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         );
                                                         if (_model.winner ==
                                                             'r') {
-                                                          final roomUpdateData11 =
-                                                              createRoomRecordData(
-                                                            isRedWinner: true,
-                                                          );
                                                           await fieldOperativesViewRoomRecord!
                                                               .reference
                                                               .update(
-                                                                  roomUpdateData11);
+                                                                  createRoomRecordData(
+                                                            isRedWinner: true,
+                                                          ));
                                                         } else {
                                                           if (_model.winner ==
                                                               'b') {
-                                                            final roomUpdateData12 =
-                                                                createRoomRecordData(
-                                                              isBlueWinner:
-                                                                  true,
-                                                            );
                                                             await fieldOperativesViewRoomRecord!
                                                                 .reference
                                                                 .update(
-                                                                    roomUpdateData12);
+                                                                    createRoomRecordData(
+                                                              isBlueWinner:
+                                                                  true,
+                                                            ));
                                                           }
                                                         }
 
-                                                        setState(() {});
+                                                        safeSetState(() {});
                                                       },
                                                       child: Container(
                                                         decoration:
@@ -1878,13 +1938,15 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .separateWordDetails(
                                                                               retrievedWordsItem),
                                                                       r'''$.color''',
-                                                                    ).toString(),
+                                                                    )
+                                                                        .toString(),
                                                                     getJsonField(
                                                                       functions
                                                                           .separateWordDetails(
                                                                               retrievedWordsItem),
                                                                       r'''$.is_guessed''',
-                                                                    ).toString())) {
+                                                                    )
+                                                                        .toString())) {
                                                               return FlutterFlowTheme
                                                                       .of(context)
                                                                   .tertiary;
@@ -1895,13 +1957,15 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .separateWordDetails(
                                                                               retrievedWordsItem),
                                                                       r'''$.color''',
-                                                                    ).toString(),
+                                                                    )
+                                                                        .toString(),
                                                                     getJsonField(
                                                                       functions
                                                                           .separateWordDetails(
                                                                               retrievedWordsItem),
                                                                       r'''$.is_guessed''',
-                                                                    ).toString())) {
+                                                                    )
+                                                                        .toString())) {
                                                               return FlutterFlowTheme
                                                                       .of(context)
                                                                   .alternate;
@@ -1978,6 +2042,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     ),
                                                                     fontSize:
                                                                         12.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500,
@@ -2015,7 +2081,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                 ),
                               ),
                             ),
-                          if (fieldOperativesViewRoomRecord!.isRedWinner)
+                          if (fieldOperativesViewRoomRecord?.isRedWinner ??
+                              true)
                             Container(
                               width: double.infinity,
                               height: double.infinity,
@@ -2048,6 +2115,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .primaryBtnText,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                           Text(
@@ -2060,6 +2128,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .primaryBackground,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                           ),
@@ -2071,9 +2140,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                               onPressed: () async {
                                                 logFirebaseEvent(
                                                     'FIELD_OPERATIVES_VIEW_START_NEW_GAME_BTN');
-                                                FFAppState().update(() {
-                                                  FFAppState().words = [];
-                                                });
+                                                FFAppState().words = [];
+                                                FFAppState().update(() {});
 
                                                 context.pushNamed(
                                                   'CreateJoinScreen',
@@ -2096,9 +2164,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 0.0),
                                                 iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
+                                                    EdgeInsets.all(0.0),
                                                 color: Color(0x004B39EF),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
@@ -2106,6 +2172,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -2136,7 +2203,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                 ],
                               ),
                             ),
-                          if (fieldOperativesViewRoomRecord!.isBlueWinner)
+                          if (fieldOperativesViewRoomRecord?.isBlueWinner ??
+                              true)
                             Container(
                               width: double.infinity,
                               height: double.infinity,
@@ -2169,6 +2237,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .primaryBtnText,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                           Text(
@@ -2181,6 +2250,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           context)
                                                       .primaryBackground,
                                                   fontSize: 36.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                           ),
@@ -2192,9 +2262,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                               onPressed: () async {
                                                 logFirebaseEvent(
                                                     'FIELD_OPERATIVES_VIEW_START_NEW_GAME_BTN');
-                                                FFAppState().update(() {
-                                                  FFAppState().words = [];
-                                                });
+                                                FFAppState().words = [];
+                                                FFAppState().update(() {});
 
                                                 context.goNamed(
                                                   'CreateJoinScreen',
@@ -2217,9 +2286,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 0.0),
                                                 iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
+                                                    EdgeInsets.all(0.0),
                                                 color: Color(0x004B39EF),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
@@ -2227,6 +2294,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -2269,8 +2337,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                             Align(
                               alignment: AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    32.0, 32.0, 32.0, 32.0),
+                                padding: EdgeInsets.all(32.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -2300,6 +2367,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     context)
                                                                 .primary,
                                                         fontSize: 36.0,
+                                                        letterSpacing: 0.0,
                                                       ),
                                                 ),
                                               ),
@@ -2323,29 +2391,29 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 'Poppins',
                                                             color: Colors.black,
                                                             fontSize: 20.0,
+                                                            letterSpacing: 0.0,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
                                                           ),
                                                     ),
                                                     Text(
-                                                      widget.roomCode!
+                                                      widget!.roomCode!
                                                           .toString(),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                fontSize: 20.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            fontSize: 20.0,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                     ),
                                                   ],
                                                 ),
@@ -2369,6 +2437,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           fontFamily: 'Poppins',
                                                           color: Colors.black,
                                                           fontSize: 18.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -2386,12 +2455,14 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     context)
                                                                 .secondary,
                                                         fontSize: 18.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
                                                 ),
                                               ),
-                                              if (stackPlayersRecord!.isBlue)
+                                              if (stackPlayersRecord?.isBlue ??
+                                                  true)
                                                 Expanded(
                                                   child: Padding(
                                                     padding:
@@ -2400,21 +2471,20 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 0.0, 0.0),
                                                     child: Text(
                                                       'BLUE TEAM',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                fontSize: 18.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            fontSize: 18.0,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -2427,21 +2497,20 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                 0.0, 0.0),
                                                     child: Text(
                                                       'RED TEAM',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .alternate,
-                                                                fontSize: 18.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .alternate,
+                                                            fontSize: 18.0,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -2486,6 +2555,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                   .of(context)
                                                               .alternate,
                                                           fontSize: 16.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
@@ -2526,9 +2596,11 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       child: Builder(
                                                         builder: (context) {
                                                           final retrievedWords =
-                                                              fieldOperativesViewRoomRecord!
-                                                                  .words
-                                                                  .toList();
+                                                              fieldOperativesViewRoomRecord
+                                                                      ?.words
+                                                                      ?.toList() ??
+                                                                  [];
+
                                                           return GridView
                                                               .builder(
                                                             padding:
@@ -2610,8 +2682,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             'n') {
                                                                           if (fieldOperativesViewRoomRecord!
                                                                               .isRedGuessing) {
-                                                                            final roomUpdateData1 =
-                                                                                {
+                                                                            await fieldOperativesViewRoomRecord!.reference.update({
                                                                               ...createRoomRecordData(
                                                                                 redWordsLeft: getJsonField(
                                                                                   _model.wordsLeftJsonLarge,
@@ -2624,10 +2695,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                 isRedGuessing: false,
                                                                                 isBlueGuessing: true,
                                                                               ),
-                                                                              'words': _model.updatedWordsListLarge,
-                                                                              'current_turn': FieldValue.increment(1),
-                                                                            };
-                                                                            await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData1);
+                                                                              ...mapToFirestore(
+                                                                                {
+                                                                                  'words': _model.updatedWordsListLarge,
+                                                                                  'current_turn': FieldValue.increment(1),
+                                                                                },
+                                                                              ),
+                                                                            });
                                                                             if (fieldOperativesViewRoomRecord!.isAiSpymaster) {
                                                                               _model.redNeutralAILargeTimer = InstantTimer.periodic(
                                                                                 duration: Duration(milliseconds: 10000),
@@ -2638,37 +2712,38 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                     userPrompt: functions.createAIUserPrompt(fieldOperativesViewRoomRecord!.words.toList()),
                                                                                     modelName: FFAppState().modelName,
                                                                                   );
+
                                                                                   if ((_model.redNeutralAIOutputLarge?.succeeded ?? true)) {
                                                                                     _model.redNeutralAILargeTimer?.cancel();
 
-                                                                                    final roomUpdateData2 = {
-                                                                                      'clues': FieldValue.arrayUnion([
-                                                                                        getClueDataFirestoreData(
-                                                                                          updateClueDataStruct(
-                                                                                            ClueDataStruct(
-                                                                                              clue: AISpymasterGroup.getClueCall
-                                                                                                  .rawClue(
+                                                                                    await fieldOperativesViewRoomRecord!.reference.update({
+                                                                                      ...mapToFirestore(
+                                                                                        {
+                                                                                          'clues': FieldValue.arrayUnion([
+                                                                                            getClueDataFirestoreData(
+                                                                                              updateClueDataStruct(
+                                                                                                ClueDataStruct(
+                                                                                                  clue: AISpymasterGroup.getClueCall.rawClue(
                                                                                                     (_model.redNeutralAIOutputLarge?.jsonBody ?? ''),
-                                                                                                  )
-                                                                                                  .toString(),
-                                                                                              turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                              isForBlue: true,
-                                                                                            ),
-                                                                                            clearUnsetFields: false,
-                                                                                          ),
-                                                                                          true,
-                                                                                        )
-                                                                                      ]),
-                                                                                    };
-                                                                                    await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData2);
+                                                                                                  ),
+                                                                                                  turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                                  isForBlue: true,
+                                                                                                ),
+                                                                                                clearUnsetFields: false,
+                                                                                              ),
+                                                                                              true,
+                                                                                            )
+                                                                                          ]),
+                                                                                        },
+                                                                                      ),
+                                                                                    });
                                                                                   }
                                                                                 },
                                                                                 startImmediately: true,
                                                                               );
                                                                             }
                                                                           } else {
-                                                                            final roomUpdateData3 =
-                                                                                {
+                                                                            await fieldOperativesViewRoomRecord!.reference.update({
                                                                               ...createRoomRecordData(
                                                                                 redWordsLeft: getJsonField(
                                                                                   _model.wordsLeftJsonLarge,
@@ -2681,10 +2756,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                 isRedGuessing: true,
                                                                                 isBlueGuessing: false,
                                                                               ),
-                                                                              'words': _model.updatedWordsListLarge,
-                                                                              'current_turn': FieldValue.increment(1),
-                                                                            };
-                                                                            await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData3);
+                                                                              ...mapToFirestore(
+                                                                                {
+                                                                                  'words': _model.updatedWordsListLarge,
+                                                                                  'current_turn': FieldValue.increment(1),
+                                                                                },
+                                                                              ),
+                                                                            });
                                                                             if (fieldOperativesViewRoomRecord!.isAiSpymaster) {
                                                                               _model.blueNeutralAILargeTimer = InstantTimer.periodic(
                                                                                 duration: Duration(milliseconds: 10000),
@@ -2695,29 +2773,31 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                     userPrompt: functions.createAIUserPrompt(fieldOperativesViewRoomRecord!.words.toList()),
                                                                                     modelName: FFAppState().modelName,
                                                                                   );
+
                                                                                   if ((_model.blueNeutralAIOutputLarge?.succeeded ?? true)) {
                                                                                     _model.blueNeutralAILargeTimer?.cancel();
 
-                                                                                    final roomUpdateData4 = {
-                                                                                      'clues': FieldValue.arrayUnion([
-                                                                                        getClueDataFirestoreData(
-                                                                                          updateClueDataStruct(
-                                                                                            ClueDataStruct(
-                                                                                              clue: AISpymasterGroup.getClueCall
-                                                                                                  .rawClue(
+                                                                                    await fieldOperativesViewRoomRecord!.reference.update({
+                                                                                      ...mapToFirestore(
+                                                                                        {
+                                                                                          'clues': FieldValue.arrayUnion([
+                                                                                            getClueDataFirestoreData(
+                                                                                              updateClueDataStruct(
+                                                                                                ClueDataStruct(
+                                                                                                  clue: AISpymasterGroup.getClueCall.rawClue(
                                                                                                     (_model.blueNeutralAIOutputLarge?.jsonBody ?? ''),
-                                                                                                  )
-                                                                                                  .toString(),
-                                                                                              turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                              isForBlue: false,
-                                                                                            ),
-                                                                                            clearUnsetFields: false,
-                                                                                          ),
-                                                                                          true,
-                                                                                        )
-                                                                                      ]),
-                                                                                    };
-                                                                                    await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData4);
+                                                                                                  ),
+                                                                                                  turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                                  isForBlue: false,
+                                                                                                ),
+                                                                                                clearUnsetFields: false,
+                                                                                              ),
+                                                                                              true,
+                                                                                            )
+                                                                                          ]),
+                                                                                        },
+                                                                                      ),
+                                                                                    });
                                                                                   }
                                                                                 },
                                                                                 startImmediately: true,
@@ -2728,7 +2808,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           if (_model.wordColorLarge ==
                                                                               'r') {
                                                                             if (fieldOperativesViewRoomRecord!.isRedGuessing) {
-                                                                              final roomUpdateData5 = {
+                                                                              await fieldOperativesViewRoomRecord!.reference.update({
                                                                                 ...createRoomRecordData(
                                                                                   redWordsLeft: getJsonField(
                                                                                     _model.wordsLeftJsonLarge,
@@ -2739,11 +2819,14 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                     r'''$.blue''',
                                                                                   ),
                                                                                 ),
-                                                                                'words': _model.updatedWordsListLarge,
-                                                                              };
-                                                                              await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData5);
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'words': _model.updatedWordsListLarge,
+                                                                                  },
+                                                                                ),
+                                                                              });
                                                                             } else {
-                                                                              final roomUpdateData6 = {
+                                                                              await fieldOperativesViewRoomRecord!.reference.update({
                                                                                 ...createRoomRecordData(
                                                                                   redWordsLeft: getJsonField(
                                                                                     _model.wordsLeftJsonLarge,
@@ -2756,10 +2839,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                   isRedGuessing: true,
                                                                                   isBlueGuessing: false,
                                                                                 ),
-                                                                                'words': _model.updatedWordsListLarge,
-                                                                                'current_turn': FieldValue.increment(1),
-                                                                              };
-                                                                              await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData6);
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'words': _model.updatedWordsListLarge,
+                                                                                    'current_turn': FieldValue.increment(1),
+                                                                                  },
+                                                                                ),
+                                                                              });
                                                                               if (fieldOperativesViewRoomRecord!.isAiSpymaster) {
                                                                                 _model.blueEndAILargeTimer = InstantTimer.periodic(
                                                                                   duration: Duration(milliseconds: 10000),
@@ -2770,29 +2856,31 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                       userPrompt: functions.createAIUserPrompt(fieldOperativesViewRoomRecord!.words.toList()),
                                                                                       modelName: FFAppState().modelName,
                                                                                     );
+
                                                                                     if ((_model.blueEndAIOutputLarge?.succeeded ?? true)) {
                                                                                       _model.blueEndAILargeTimer?.cancel();
 
-                                                                                      final roomUpdateData7 = {
-                                                                                        'clues': FieldValue.arrayUnion([
-                                                                                          getClueDataFirestoreData(
-                                                                                            updateClueDataStruct(
-                                                                                              ClueDataStruct(
-                                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                                    .rawClue(
+                                                                                      await fieldOperativesViewRoomRecord!.reference.update({
+                                                                                        ...mapToFirestore(
+                                                                                          {
+                                                                                            'clues': FieldValue.arrayUnion([
+                                                                                              getClueDataFirestoreData(
+                                                                                                updateClueDataStruct(
+                                                                                                  ClueDataStruct(
+                                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
                                                                                                       (_model.blueEndAIOutputLarge?.jsonBody ?? ''),
-                                                                                                    )
-                                                                                                    .toString(),
-                                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                                isForBlue: false,
-                                                                                              ),
-                                                                                              clearUnsetFields: false,
-                                                                                            ),
-                                                                                            true,
-                                                                                          )
-                                                                                        ]),
-                                                                                      };
-                                                                                      await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData7);
+                                                                                                    ),
+                                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                                    isForBlue: false,
+                                                                                                  ),
+                                                                                                  clearUnsetFields: false,
+                                                                                                ),
+                                                                                                true,
+                                                                                              )
+                                                                                            ]),
+                                                                                          },
+                                                                                        ),
+                                                                                      });
                                                                                     }
                                                                                   },
                                                                                   startImmediately: true,
@@ -2801,7 +2889,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             }
                                                                           } else {
                                                                             if (fieldOperativesViewRoomRecord!.isRedGuessing) {
-                                                                              final roomUpdateData8 = {
+                                                                              await fieldOperativesViewRoomRecord!.reference.update({
                                                                                 ...createRoomRecordData(
                                                                                   redWordsLeft: getJsonField(
                                                                                     _model.wordsLeftJsonLarge,
@@ -2814,10 +2902,13 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                   isRedGuessing: false,
                                                                                   isBlueGuessing: true,
                                                                                 ),
-                                                                                'words': _model.updatedWordsListLarge,
-                                                                                'current_turn': FieldValue.increment(1),
-                                                                              };
-                                                                              await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData8);
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'words': _model.updatedWordsListLarge,
+                                                                                    'current_turn': FieldValue.increment(1),
+                                                                                  },
+                                                                                ),
+                                                                              });
                                                                               if (fieldOperativesViewRoomRecord!.isAiSpymaster) {
                                                                                 _model.redEndAILargeTimer = InstantTimer.periodic(
                                                                                   duration: Duration(milliseconds: 10000),
@@ -2828,36 +2919,38 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                       userPrompt: functions.createAIUserPrompt(fieldOperativesViewRoomRecord!.words.toList()),
                                                                                       modelName: FFAppState().modelName,
                                                                                     );
+
                                                                                     if ((_model.redEndAIOutputLarge?.succeeded ?? true)) {
                                                                                       _model.redEndAILargeTimer?.cancel();
 
-                                                                                      final roomUpdateData9 = {
-                                                                                        'clues': FieldValue.arrayUnion([
-                                                                                          getClueDataFirestoreData(
-                                                                                            updateClueDataStruct(
-                                                                                              ClueDataStruct(
-                                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                                    .rawClue(
+                                                                                      await fieldOperativesViewRoomRecord!.reference.update({
+                                                                                        ...mapToFirestore(
+                                                                                          {
+                                                                                            'clues': FieldValue.arrayUnion([
+                                                                                              getClueDataFirestoreData(
+                                                                                                updateClueDataStruct(
+                                                                                                  ClueDataStruct(
+                                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
                                                                                                       (_model.redEndAIOutputLarge?.jsonBody ?? ''),
-                                                                                                    )
-                                                                                                    .toString(),
-                                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                                isForBlue: true,
-                                                                                              ),
-                                                                                              clearUnsetFields: false,
-                                                                                            ),
-                                                                                            true,
-                                                                                          )
-                                                                                        ]),
-                                                                                      };
-                                                                                      await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData9);
+                                                                                                    ),
+                                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                                    isForBlue: true,
+                                                                                                  ),
+                                                                                                  clearUnsetFields: false,
+                                                                                                ),
+                                                                                                true,
+                                                                                              )
+                                                                                            ]),
+                                                                                          },
+                                                                                        ),
+                                                                                      });
                                                                                     }
                                                                                   },
                                                                                   startImmediately: true,
                                                                                 );
                                                                               }
                                                                             } else {
-                                                                              final roomUpdateData10 = {
+                                                                              await fieldOperativesViewRoomRecord!.reference.update({
                                                                                 ...createRoomRecordData(
                                                                                   redWordsLeft: getJsonField(
                                                                                     _model.wordsLeftJsonLarge,
@@ -2868,9 +2961,12 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                     r'''$.blue''',
                                                                                   ),
                                                                                 ),
-                                                                                'words': _model.updatedWordsListLarge,
-                                                                              };
-                                                                              await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData10);
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'words': _model.updatedWordsListLarge,
+                                                                                  },
+                                                                                ),
+                                                                              });
                                                                             }
                                                                           }
                                                                         }
@@ -2888,26 +2984,22 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         );
                                                                         if (_model.winnerLarge ==
                                                                             'r') {
-                                                                          final roomUpdateData11 =
-                                                                              createRoomRecordData(
-                                                                            isRedWinner:
-                                                                                true,
-                                                                          );
                                                                           await fieldOperativesViewRoomRecord!
                                                                               .reference
-                                                                              .update(roomUpdateData11);
+                                                                              .update(createRoomRecordData(
+                                                                            isRedWinner:
+                                                                                true,
+                                                                          ));
                                                                         } else {
                                                                           if (_model.winnerLarge ==
                                                                               'b') {
-                                                                            final roomUpdateData12 =
-                                                                                createRoomRecordData(
+                                                                            await fieldOperativesViewRoomRecord!.reference.update(createRoomRecordData(
                                                                               isBlueWinner: true,
-                                                                            );
-                                                                            await fieldOperativesViewRoomRecord!.reference.update(roomUpdateData12);
+                                                                            ));
                                                                           }
                                                                         }
 
-                                                                        setState(
+                                                                        safeSetState(
                                                                             () {});
                                                                       },
                                                                       child:
@@ -2991,6 +3083,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                                       FlutterFlowTheme.of(context).primaryText,
                                                                                     ),
                                                                                     fontSize: 18.0,
+                                                                                    letterSpacing: 0.0,
                                                                                     fontWeight: FontWeight.w500,
                                                                                   ),
                                                                             ),
@@ -3035,8 +3128,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                             ),
                                             Container(
                                               width: 1.5,
-                                              height: MediaQuery.of(context)
-                                                      .size
+                                              height: MediaQuery.sizeOf(context)
                                                       .height *
                                                   0.8,
                                               decoration: BoxDecoration(
@@ -3083,6 +3175,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         'Poppins',
                                                                     fontSize:
                                                                         24.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500,
@@ -3112,6 +3206,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         .primary,
                                                                     fontSize:
                                                                         32.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                   ),
                                                             ),
                                                           ),
@@ -3135,6 +3231,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                         .black,
                                                                     fontSize:
                                                                         20.0,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -3156,13 +3254,16 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                       .alternate,
                                                                   fontSize:
                                                                       32.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                    if (fieldOperativesViewRoomRecord!
-                                                        .isRedGuessing)
+                                                    if (fieldOperativesViewRoomRecord
+                                                            ?.isRedGuessing ??
+                                                        true)
                                                       Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -3177,11 +3278,11 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             children: [
                                                               if (fieldOperativesViewRoomRecord!
                                                                       .isAiSpymaster &&
-                                                                  (fieldOperativesViewRoomRecord!
-                                                                          .currentTurn ==
-                                                                      fieldOperativesViewRoomRecord!
-                                                                          .clues
-                                                                          .length) &&
+                                                                  (fieldOperativesViewRoomRecord
+                                                                          ?.currentTurn ==
+                                                                      fieldOperativesViewRoomRecord
+                                                                          ?.clues
+                                                                          ?.length) &&
                                                                   !fieldOperativesViewRoomRecord!
                                                                       .clues[
                                                                           fieldOperativesViewRoomRecord!.currentTurn -
@@ -3203,15 +3304,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             .alternate,
                                                                         fontSize:
                                                                             24.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ),
                                                               if (fieldOperativesViewRoomRecord!
                                                                       .isAiSpymaster &&
-                                                                  (fieldOperativesViewRoomRecord!
-                                                                          .currentTurn !=
-                                                                      fieldOperativesViewRoomRecord!
-                                                                          .clues
-                                                                          .length))
+                                                                  (fieldOperativesViewRoomRecord
+                                                                          ?.currentTurn !=
+                                                                      fieldOperativesViewRoomRecord
+                                                                          ?.clues
+                                                                          ?.length))
                                                                 Text(
                                                                   'Thinking...',
                                                                   style: FlutterFlowTheme.of(
@@ -3224,6 +3327,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             .alternate,
                                                                         fontSize:
                                                                             24.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ).animateOnPageLoad(
                                                                     animationsMap[
@@ -3251,6 +3356,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .alternate,
                                                                       fontSize:
                                                                           18.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .normal,
@@ -3271,22 +3378,22 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     logFirebaseEvent(
                                                                         'FIELD_OPERATIVES_VIEW_END_TURN_BTN_ON_TA');
 
-                                                                    final roomUpdateData1 =
-                                                                        {
+                                                                    await fieldOperativesViewRoomRecord!
+                                                                        .reference
+                                                                        .update({
                                                                       ...createRoomRecordData(
                                                                         isRedGuessing:
                                                                             false,
                                                                         isBlueGuessing:
                                                                             true,
                                                                       ),
-                                                                      'current_turn':
-                                                                          FieldValue.increment(
-                                                                              1),
-                                                                    };
-                                                                    await fieldOperativesViewRoomRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            roomUpdateData1);
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'current_turn':
+                                                                              FieldValue.increment(1),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     if (fieldOperativesViewRoomRecord!
                                                                         .isAiSpymaster) {
                                                                       _model.blueAIOutputLarge = await AISpymasterGroup
@@ -3304,34 +3411,33 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             FFAppState().modelName,
                                                                       );
 
-                                                                      final roomUpdateData2 =
-                                                                          {
-                                                                        'clues':
-                                                                            FieldValue.arrayUnion([
-                                                                          getClueDataFirestoreData(
-                                                                            updateClueDataStruct(
-                                                                              ClueDataStruct(
-                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                    .rawClue(
-                                                                                      (_model.blueAIOutputLarge?.jsonBody ?? ''),
-                                                                                    )
-                                                                                    .toString(),
-                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                isForBlue: true,
-                                                                              ),
-                                                                              clearUnsetFields: false,
-                                                                            ),
-                                                                            true,
-                                                                          )
-                                                                        ]),
-                                                                      };
                                                                       await fieldOperativesViewRoomRecord!
                                                                           .reference
-                                                                          .update(
-                                                                              roomUpdateData2);
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'clues':
+                                                                                FieldValue.arrayUnion([
+                                                                              getClueDataFirestoreData(
+                                                                                updateClueDataStruct(
+                                                                                  ClueDataStruct(
+                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                      (_model.blueAIOutputLarge?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                    isForBlue: true,
+                                                                                  ),
+                                                                                  clearUnsetFields: false,
+                                                                                ),
+                                                                                true,
+                                                                              )
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
                                                                     }
 
-                                                                    setState(
+                                                                    safeSetState(
                                                                         () {});
                                                                   },
                                                                   text:
@@ -3367,6 +3473,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                               Colors.white,
                                                                           fontSize:
                                                                               18.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.normal,
                                                                         ),
@@ -3388,8 +3496,9 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                           ),
                                                         ],
                                                       ),
-                                                    if (fieldOperativesViewRoomRecord!
-                                                        .isBlueGuessing)
+                                                    if (fieldOperativesViewRoomRecord
+                                                            ?.isBlueGuessing ??
+                                                        true)
                                                       Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -3404,11 +3513,11 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             children: [
                                                               if (fieldOperativesViewRoomRecord!
                                                                       .isAiSpymaster &&
-                                                                  (fieldOperativesViewRoomRecord!
-                                                                          .currentTurn ==
-                                                                      fieldOperativesViewRoomRecord!
-                                                                          .clues
-                                                                          .length) &&
+                                                                  (fieldOperativesViewRoomRecord
+                                                                          ?.currentTurn ==
+                                                                      fieldOperativesViewRoomRecord
+                                                                          ?.clues
+                                                                          ?.length) &&
                                                                   fieldOperativesViewRoomRecord!
                                                                       .clues[
                                                                           fieldOperativesViewRoomRecord!.currentTurn -
@@ -3430,15 +3539,17 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             .primary,
                                                                         fontSize:
                                                                             24.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ),
                                                               if (fieldOperativesViewRoomRecord!
                                                                       .isAiSpymaster &&
-                                                                  (fieldOperativesViewRoomRecord!
-                                                                          .currentTurn !=
-                                                                      fieldOperativesViewRoomRecord!
-                                                                          .clues
-                                                                          .length))
+                                                                  (fieldOperativesViewRoomRecord
+                                                                          ?.currentTurn !=
+                                                                      fieldOperativesViewRoomRecord
+                                                                          ?.clues
+                                                                          ?.length))
                                                                 Text(
                                                                   'Thinking...',
                                                                   style: FlutterFlowTheme.of(
@@ -3451,6 +3562,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             .primary,
                                                                         fontSize:
                                                                             24.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ).animateOnPageLoad(
                                                                     animationsMap[
@@ -3478,6 +3591,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .primary,
                                                                       fontSize:
                                                                           18.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .normal,
@@ -3498,22 +3613,22 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     logFirebaseEvent(
                                                                         'FIELD_OPERATIVES_VIEW_END_TURN_BTN_ON_TA');
 
-                                                                    final roomUpdateData1 =
-                                                                        {
+                                                                    await fieldOperativesViewRoomRecord!
+                                                                        .reference
+                                                                        .update({
                                                                       ...createRoomRecordData(
                                                                         isRedGuessing:
                                                                             true,
                                                                         isBlueGuessing:
                                                                             false,
                                                                       ),
-                                                                      'current_turn':
-                                                                          FieldValue.increment(
-                                                                              1),
-                                                                    };
-                                                                    await fieldOperativesViewRoomRecord!
-                                                                        .reference
-                                                                        .update(
-                                                                            roomUpdateData1);
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'current_turn':
+                                                                              FieldValue.increment(1),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     if (fieldOperativesViewRoomRecord!
                                                                         .isAiSpymaster) {
                                                                       _model.redAIOutputLarge = await AISpymasterGroup
@@ -3531,34 +3646,33 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             FFAppState().modelName,
                                                                       );
 
-                                                                      final roomUpdateData2 =
-                                                                          {
-                                                                        'clues':
-                                                                            FieldValue.arrayUnion([
-                                                                          getClueDataFirestoreData(
-                                                                            updateClueDataStruct(
-                                                                              ClueDataStruct(
-                                                                                clue: AISpymasterGroup.getClueCall
-                                                                                    .rawClue(
-                                                                                      (_model.redAIOutputLarge?.jsonBody ?? ''),
-                                                                                    )
-                                                                                    .toString(),
-                                                                                turn: fieldOperativesViewRoomRecord!.currentTurn,
-                                                                                isForBlue: false,
-                                                                              ),
-                                                                              clearUnsetFields: false,
-                                                                            ),
-                                                                            true,
-                                                                          )
-                                                                        ]),
-                                                                      };
                                                                       await fieldOperativesViewRoomRecord!
                                                                           .reference
-                                                                          .update(
-                                                                              roomUpdateData2);
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'clues':
+                                                                                FieldValue.arrayUnion([
+                                                                              getClueDataFirestoreData(
+                                                                                updateClueDataStruct(
+                                                                                  ClueDataStruct(
+                                                                                    clue: AISpymasterGroup.getClueCall.rawClue(
+                                                                                      (_model.redAIOutputLarge?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    turn: fieldOperativesViewRoomRecord?.currentTurn,
+                                                                                    isForBlue: false,
+                                                                                  ),
+                                                                                  clearUnsetFields: false,
+                                                                                ),
+                                                                                true,
+                                                                              )
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
                                                                     }
 
-                                                                    setState(
+                                                                    safeSetState(
                                                                         () {});
                                                                   },
                                                                   text:
@@ -3594,6 +3708,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                               Colors.white,
                                                                           fontSize:
                                                                               18.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.normal,
                                                                         ),
@@ -3668,6 +3784,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .primary,
                                                                       fontSize:
                                                                           32.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                             ),
@@ -3676,18 +3794,19 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     PlayersRecord>>(
                                                               stream:
                                                                   queryPlayersRecord(
-                                                                parent:
-                                                                    fieldOperativesViewRoomRecord!
-                                                                        .reference,
-                                                                queryBuilder: (playersRecord) => playersRecord
-                                                                    .where(
-                                                                        'is_team_selected',
-                                                                        isEqualTo:
-                                                                            true)
-                                                                    .where(
-                                                                        'is_blue',
-                                                                        isEqualTo:
-                                                                            true),
+                                                                parent: fieldOperativesViewRoomRecord
+                                                                    ?.reference,
+                                                                queryBuilder:
+                                                                    (playersRecord) =>
+                                                                        playersRecord
+                                                                            .where(
+                                                                              'is_team_selected',
+                                                                              isEqualTo: true,
+                                                                            )
+                                                                            .where(
+                                                                              'is_blue',
+                                                                              isEqualTo: true,
+                                                                            ),
                                                               ),
                                                               builder: (context,
                                                                   snapshot) {
@@ -3707,6 +3826,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     columnPlayersRecordList =
                                                                     snapshot
                                                                         .data!;
+
                                                                 return Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -3738,6 +3858,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Poppins',
                                                                                   fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
                                                                                   fontWeight: FontWeight.w300,
                                                                                 ),
                                                                           ),
@@ -3778,6 +3899,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                           .alternate,
                                                                       fontSize:
                                                                           32.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                             ),
@@ -3786,18 +3909,19 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     PlayersRecord>>(
                                                               stream:
                                                                   queryPlayersRecord(
-                                                                parent:
-                                                                    fieldOperativesViewRoomRecord!
-                                                                        .reference,
-                                                                queryBuilder: (playersRecord) => playersRecord
-                                                                    .where(
-                                                                        'is_team_selected',
-                                                                        isEqualTo:
-                                                                            true)
-                                                                    .where(
-                                                                        'is_blue',
-                                                                        isEqualTo:
-                                                                            false),
+                                                                parent: fieldOperativesViewRoomRecord
+                                                                    ?.reference,
+                                                                queryBuilder:
+                                                                    (playersRecord) =>
+                                                                        playersRecord
+                                                                            .where(
+                                                                              'is_team_selected',
+                                                                              isEqualTo: true,
+                                                                            )
+                                                                            .where(
+                                                                              'is_blue',
+                                                                              isEqualTo: false,
+                                                                            ),
                                                               ),
                                                               builder: (context,
                                                                   snapshot) {
@@ -3817,6 +3941,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                     columnPlayersRecordList =
                                                                     snapshot
                                                                         .data!;
+
                                                                 return Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -3848,6 +3973,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Poppins',
                                                                                   fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
                                                                                   fontWeight: FontWeight.w300,
                                                                                 ),
                                                                           ),
@@ -3884,7 +4010,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                 ),
                               ),
                             ),
-                          if (fieldOperativesViewRoomRecord!.isBlueWinner &&
+                          if ((fieldOperativesViewRoomRecord?.isBlueWinner ??
+                                  true) &&
                               responsiveVisibility(
                                 context: context,
                                 phone: false,
@@ -3942,6 +4069,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             context)
                                                         .primaryBackground,
                                                     fontSize: 60.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                     lineHeight: 1.0,
                                                   ),
@@ -3954,9 +4082,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                 onPressed: () async {
                                                   logFirebaseEvent(
                                                       'FIELD_OPERATIVES_VIEW_START_NEW_GAME_BTN');
-                                                  FFAppState().update(() {
-                                                    FFAppState().words = [];
-                                                  });
+                                                  FFAppState().words = [];
+                                                  FFAppState().update(() {});
 
                                                   context.goNamed(
                                                     'CreateJoinScreen',
@@ -3979,9 +4106,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 0.0),
                                                   iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
+                                                      EdgeInsets.all(0.0),
                                                   color: Color(0x004B39EF),
                                                   textStyle: FlutterFlowTheme
                                                           .of(context)
@@ -3990,6 +4115,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.white,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -4022,7 +4148,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                 ],
                               ),
                             ),
-                          if (fieldOperativesViewRoomRecord!.isRedWinner &&
+                          if ((fieldOperativesViewRoomRecord?.isRedWinner ??
+                                  true) &&
                               responsiveVisibility(
                                 context: context,
                                 phone: false,
@@ -4080,6 +4207,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                             context)
                                                         .primaryBackground,
                                                     fontSize: 60.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                     lineHeight: 1.0,
                                                   ),
@@ -4092,9 +4220,8 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                 onPressed: () async {
                                                   logFirebaseEvent(
                                                       'FIELD_OPERATIVES_VIEW_START_NEW_GAME_BTN');
-                                                  FFAppState().update(() {
-                                                    FFAppState().words = [];
-                                                  });
+                                                  FFAppState().words = [];
+                                                  FFAppState().update(() {});
 
                                                   context.goNamed(
                                                     'CreateJoinScreen',
@@ -4117,9 +4244,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 0.0),
                                                   iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
+                                                      EdgeInsets.all(0.0),
                                                   color: Color(0x004B39EF),
                                                   textStyle: FlutterFlowTheme
                                                           .of(context)
@@ -4128,6 +4253,7 @@ class _FieldOperativesViewWidgetState extends State<FieldOperativesViewWidget>
                                                         fontFamily: 'Poppins',
                                                         color: Colors.white,
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),

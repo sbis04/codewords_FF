@@ -1,7 +1,6 @@
 // Export pages
 export '/pages/start_screen/start_screen_widget.dart' show StartScreenWidget;
-export '/pages/joining_pages/host_page/host_page_widget.dart'
-    show HostPageWidget;
+export '/pages/host_page/host_page_widget.dart' show HostPageWidget;
 export '/pages/joining_pages/player_page/player_page_widget.dart'
     show PlayerPageWidget;
 export '/pages/game_pages/field_operatives_view/field_operatives_view_widget.dart'

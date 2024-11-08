@@ -13,10 +13,10 @@ import 'game_mode_dialog_model.dart';
 export 'game_mode_dialog_model.dart';
 
 class GameModeDialogWidget extends StatefulWidget {
-  const GameModeDialogWidget({Key? key}) : super(key: key);
+  const GameModeDialogWidget({super.key});
 
   @override
-  _GameModeDialogWidgetState createState() => _GameModeDialogWidgetState();
+  State<GameModeDialogWidget> createState() => _GameModeDialogWidgetState();
 }
 
 class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
@@ -33,7 +33,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
     super.initState();
     _model = createModel(context, () => GameModeDialogModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -45,8 +45,6 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Stack(
       children: [
         if (!_model.isCreating)
@@ -65,8 +63,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,6 +73,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Poppins',
                               fontSize: 20.0,
+                              letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -89,6 +87,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                     fontFamily: 'Poppins',
                                     color: Color(0x7F101213),
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -111,39 +110,46 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                   onTap: () async {
                                     logFirebaseEvent(
                                         'GAME_MODE_DIALOG_Container_qyxgqhof_ON_T');
-                                    setState(() {
-                                      _model.isCreating = true;
-                                    });
+                                    _model.isCreating = true;
+                                    _model.roomCode =
+                                        functions.generateRoomCode();
+                                    safeSetState(() {});
 
-                                    final roomCreateData = createRoomRecordData(
-                                      code: functions.generateRoomCode(),
-                                      host: currentUserUid,
-                                      isAiSpymaster: false,
-                                      createdAt: getCurrentTimestamp,
-                                    );
                                     var roomRecordReference =
                                         RoomRecord.collection.doc();
                                     await roomRecordReference
-                                        .set(roomCreateData);
+                                        .set(createRoomRecordData(
+                                      code: _model.roomCode,
+                                      host: currentUserUid,
+                                      isAiSpymaster: false,
+                                      createdAt: getCurrentTimestamp,
+                                    ));
                                     _model.roomDetails =
                                         RoomRecord.getDocumentFromData(
-                                            roomCreateData,
+                                            createRoomRecordData(
+                                              code: _model.roomCode,
+                                              host: currentUserUid,
+                                              isAiSpymaster: false,
+                                              createdAt: getCurrentTimestamp,
+                                            ),
                                             roomRecordReference);
 
-                                    final playersCreateData =
-                                        createPlayersRecordData(
-                                      name: currentUserDisplayName,
-                                      isTeamSelected: false,
-                                      uid: currentUserUid,
-                                    );
                                     var playersRecordReference =
                                         PlayersRecord.createDoc(
                                             _model.roomDetails!.reference);
                                     await playersRecordReference
-                                        .set(playersCreateData);
+                                        .set(createPlayersRecordData(
+                                      name: currentUserDisplayName,
+                                      isTeamSelected: false,
+                                      uid: currentUserUid,
+                                    ));
                                     _model.playerDocument =
                                         PlayersRecord.getDocumentFromData(
-                                            playersCreateData,
+                                            createPlayersRecordData(
+                                              name: currentUserDisplayName,
+                                              isTeamSelected: false,
+                                              uid: currentUserUid,
+                                            ),
                                             playersRecordReference);
                                     Navigator.pop(context);
 
@@ -160,7 +166,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                       },
                                     );
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -204,6 +210,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                                             context)
                                                         .primary,
                                                     fontSize: 18.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),
@@ -227,73 +234,85 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                   onTap: () async {
                                     logFirebaseEvent(
                                         'GAME_MODE_DIALOG_Container_y6i0q3me_ON_T');
-                                    setState(() {
-                                      _model.isCreating = true;
-                                    });
+                                    _model.isCreating = true;
+                                    safeSetState(() {});
 
-                                    final roomCreateData = createRoomRecordData(
+                                    var roomRecordReference =
+                                        RoomRecord.collection.doc();
+                                    await roomRecordReference
+                                        .set(createRoomRecordData(
                                       code: functions.generateRoomCode(),
                                       host: currentUserUid,
                                       isAiSpymaster: true,
                                       createdAt: getCurrentTimestamp,
-                                    );
-                                    var roomRecordReference =
-                                        RoomRecord.collection.doc();
-                                    await roomRecordReference
-                                        .set(roomCreateData);
+                                    ));
                                     _model.roomDetailsAI =
                                         RoomRecord.getDocumentFromData(
-                                            roomCreateData,
+                                            createRoomRecordData(
+                                              code:
+                                                  functions.generateRoomCode(),
+                                              host: currentUserUid,
+                                              isAiSpymaster: true,
+                                              createdAt: getCurrentTimestamp,
+                                            ),
                                             roomRecordReference);
 
-                                    final playersCreateData1 =
-                                        createPlayersRecordData(
-                                      name: currentUserDisplayName,
-                                      isTeamSelected: false,
-                                      uid: currentUserUid,
-                                    );
                                     var playersRecordReference1 =
                                         PlayersRecord.createDoc(
                                             _model.roomDetailsAI!.reference);
                                     await playersRecordReference1
-                                        .set(playersCreateData1);
+                                        .set(createPlayersRecordData(
+                                      name: currentUserDisplayName,
+                                      isTeamSelected: false,
+                                      uid: currentUserUid,
+                                    ));
                                     _model.playerDocumentUser =
                                         PlayersRecord.getDocumentFromData(
-                                            playersCreateData1,
+                                            createPlayersRecordData(
+                                              name: currentUserDisplayName,
+                                              isTeamSelected: false,
+                                              uid: currentUserUid,
+                                            ),
                                             playersRecordReference1);
 
-                                    final playersCreateData2 =
-                                        createPlayersRecordData(
-                                      name: 'AI Spymaster',
-                                      isTeamSelected: true,
-                                      isBlue: true,
-                                      isSpymaster: true,
-                                    );
                                     var playersRecordReference2 =
                                         PlayersRecord.createDoc(
                                             _model.roomDetailsAI!.reference);
                                     await playersRecordReference2
-                                        .set(playersCreateData2);
-                                    _model.spymasterBlueAI =
-                                        PlayersRecord.getDocumentFromData(
-                                            playersCreateData2,
-                                            playersRecordReference2);
-
-                                    final playersCreateData3 =
-                                        createPlayersRecordData(
+                                        .set(createPlayersRecordData(
                                       name: 'AI Spymaster',
                                       isTeamSelected: true,
-                                      isBlue: false,
+                                      isBlue: true,
                                       isSpymaster: true,
-                                    );
+                                    ));
+                                    _model.spymasterBlueAI =
+                                        PlayersRecord.getDocumentFromData(
+                                            createPlayersRecordData(
+                                              name: 'AI Spymaster',
+                                              isTeamSelected: true,
+                                              isBlue: true,
+                                              isSpymaster: true,
+                                            ),
+                                            playersRecordReference2);
+
                                     var playersRecordReference3 =
                                         PlayersRecord.createDoc(
                                             _model.roomDetailsAI!.reference);
                                     await playersRecordReference3
-                                        .set(playersCreateData3);
+                                        .set(createPlayersRecordData(
+                                      name: 'AI Spymaster',
+                                      isTeamSelected: true,
+                                      isBlue: false,
+                                      isSpymaster: true,
+                                    ));
                                     _model.spymasterRedAI =
                                         PlayersRecord.getDocumentFromData(
-                                            playersCreateData3,
+                                            createPlayersRecordData(
+                                              name: 'AI Spymaster',
+                                              isTeamSelected: true,
+                                              isBlue: false,
+                                              isSpymaster: true,
+                                            ),
                                             playersRecordReference3);
                                     Navigator.pop(context);
 
@@ -310,7 +329,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                       },
                                     );
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -354,6 +373,7 @@ class _GameModeDialogWidgetState extends State<GameModeDialogWidget> {
                                                             context)
                                                         .secondary,
                                                     fontSize: 18.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),

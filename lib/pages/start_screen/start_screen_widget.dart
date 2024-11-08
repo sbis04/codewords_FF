@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -16,10 +17,10 @@ import 'start_screen_model.dart';
 export 'start_screen_model.dart';
 
 class StartScreenWidget extends StatefulWidget {
-  const StartScreenWidget({Key? key}) : super(key: key);
+  const StartScreenWidget({super.key});
 
   @override
-  _StartScreenWidgetState createState() => _StartScreenWidgetState();
+  State<StartScreenWidget> createState() => _StartScreenWidgetState();
 }
 
 class _StartScreenWidgetState extends State<StartScreenWidget>
@@ -27,103 +28,8 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
   late StartScreenModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
-  final animationsMap = {
-    'imageOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 40.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'buttonOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 40.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'buttonOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -131,8 +37,107 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
     _model = createModel(context, () => StartScreenModel());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'StartScreen'});
-    _model.textFieldSmallController ??= TextEditingController();
-    _model.textFieldLargeController ??= TextEditingController();
+    _model.textFieldSmallTextController ??= TextEditingController();
+    _model.textFieldSmallFocusNode ??= FocusNode();
+
+    _model.textFieldLargeTextController ??= TextEditingController();
+    _model.textFieldLargeFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'imageOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 1000.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 40.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'buttonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 40.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'buttonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -140,23 +145,20 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBtnText,
@@ -174,6 +176,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                         fontFamily: 'Poppins',
                         color: FlutterFlowTheme.of(context).primary,
                         fontSize: 30.0,
+                        letterSpacing: 0.0,
                       ),
                 ),
                 actions: [
@@ -268,7 +271,10 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 30.0),
                                 child: TextFormField(
-                                  controller: _model.textFieldSmallController,
+                                  controller:
+                                      _model.textFieldSmallTextController,
+                                  focusNode: _model.textFieldSmallFocusNode,
+                                  autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Name',
@@ -279,6 +285,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                           color: FlutterFlowTheme.of(context)
                                               .primaryBtnText,
                                           fontSize: 16.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
                                         ),
                                     hintText: 'Enter your name',
@@ -288,6 +295,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                           fontFamily: 'Poppins',
                                           color: Color(0x80FFFFFF),
                                           fontSize: 16.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
                                         ),
                                     enabledBorder: UnderlineInputBorder(
@@ -344,10 +352,11 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
                                   validator: _model
-                                      .textFieldSmallControllerValidator
+                                      .textFieldSmallTextControllerValidator
                                       .asValidator(context),
                                 ).animateOnPageLoad(animationsMap[
                                     'textFieldOnPageLoadAnimation1']!),
@@ -366,13 +375,11 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                       return;
                                     }
 
-                                    final usersUpdateData =
-                                        createUsersRecordData(
-                                      displayName:
-                                          _model.textFieldSmallController.text,
-                                    );
                                     await currentUserReference!
-                                        .update(usersUpdateData);
+                                        .update(createUsersRecordData(
+                                      displayName: _model
+                                          .textFieldSmallTextController.text,
+                                    ));
 
                                     context.goNamedAuth(
                                       'CreateJoinScreen',
@@ -403,6 +410,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
                                           fontSize: 20.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
                                         ),
                                     elevation: 2.0,
@@ -453,6 +461,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                     color: FlutterFlowTheme.of(context)
                                         .primaryBackground,
                                     fontSize: 36.0,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                             FlutterFlowIconButton(
@@ -490,7 +499,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                       child: Image.asset(
                                         'assets/images/spy_logo.png',
                                         width:
-                                            MediaQuery.of(context).size.width *
+                                            MediaQuery.sizeOf(context).width *
                                                 0.25,
                                         fit: BoxFit.contain,
                                       ),
@@ -500,7 +509,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                               ),
                               Spacer(),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.3,
+                                width: MediaQuery.sizeOf(context).width * 0.3,
                                 decoration: BoxDecoration(
                                   color: Color(0x00FFFFFF),
                                 ),
@@ -513,7 +522,10 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                           0.0, 0.0, 0.0, 30.0),
                                       child: TextFormField(
                                         controller:
-                                            _model.textFieldLargeController,
+                                            _model.textFieldLargeTextController,
+                                        focusNode:
+                                            _model.textFieldLargeFocusNode,
+                                        autofocus: false,
                                         obscureText: false,
                                         decoration: InputDecoration(
                                           labelText: 'Name',
@@ -526,6 +538,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                                     FlutterFlowTheme.of(context)
                                                         .primaryBtnText,
                                                 fontSize: 20.0,
+                                                letterSpacing: 0.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
                                           hintText: 'Enter your name',
@@ -536,6 +549,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                                     fontFamily: 'Poppins',
                                                     color: Color(0x80FFFFFF),
                                                     fontSize: 20.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                   ),
@@ -603,10 +617,11 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                                   FlutterFlowTheme.of(context)
                                                       .primaryBtnText,
                                               fontSize: 20.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.normal,
                                             ),
                                         validator: _model
-                                            .textFieldLargeControllerValidator
+                                            .textFieldLargeTextControllerValidator
                                             .asValidator(context),
                                       ).animateOnPageLoad(animationsMap[
                                           'textFieldOnPageLoadAnimation2']!),
@@ -626,13 +641,12 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                             return;
                                           }
 
-                                          final usersUpdateData =
-                                              createUsersRecordData(
-                                            displayName: _model
-                                                .textFieldLargeController.text,
-                                          );
                                           await currentUserReference!
-                                              .update(usersUpdateData);
+                                              .update(createUsersRecordData(
+                                            displayName: _model
+                                                .textFieldLargeTextController
+                                                .text,
+                                          ));
 
                                           context.goNamedAuth(
                                             'CreateJoinScreen',
@@ -669,6 +683,7 @@ class _StartScreenWidgetState extends State<StartScreenWidget>
                                                     FlutterFlowTheme.of(context)
                                                         .primary,
                                                 fontSize: 24.0,
+                                                letterSpacing: 0.0,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                           elevation: 2.0,

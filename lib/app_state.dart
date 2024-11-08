@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
-import 'backend/api_requests/api_manager.dart';
+import '/backend/api_requests/api_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
 class FFAppState extends ChangeNotifier {
-  static final FFAppState _instance = FFAppState._internal();
+  static FFAppState _instance = FFAppState._internal();
 
   factory FFAppState() {
     return _instance;
   }
 
   FFAppState._internal();
+
+  static void reset() {
+    _instance = FFAppState._internal();
+  }
 
   Future initializePersistedState() async {}
 
@@ -23,72 +27,54 @@ class FFAppState extends ChangeNotifier {
 
   List<String> _words = [];
   List<String> get words => _words;
-  set words(List<String> _value) {
-    _words = _value;
+  set words(List<String> value) {
+    _words = value;
   }
 
-  void addToWords(String _value) {
-    _words.add(_value);
+  void addToWords(String value) {
+    words.add(value);
   }
 
-  void removeFromWords(String _value) {
-    _words.remove(_value);
+  void removeFromWords(String value) {
+    words.remove(value);
   }
 
-  void removeAtIndexFromWords(int _index) {
-    _words.removeAt(_index);
+  void removeAtIndexFromWords(int index) {
+    words.removeAt(index);
   }
 
   void updateWordsAtIndex(
-    int _index,
-    Function(String) updateFn,
+    int index,
+    String Function(String) updateFn,
   ) {
-    updateFn(_words[_index]);
+    words[index] = updateFn(_words[index]);
+  }
+
+  void insertAtIndexInWords(int index, String value) {
+    words.insert(index, value);
   }
 
   bool _isVerifyPressed = false;
   bool get isVerifyPressed => _isVerifyPressed;
-  set isVerifyPressed(bool _value) {
-    _isVerifyPressed = _value;
+  set isVerifyPressed(bool value) {
+    _isVerifyPressed = value;
   }
 
   bool _isJoinning = false;
   bool get isJoinning => _isJoinning;
-  set isJoinning(bool _value) {
-    _isJoinning = _value;
+  set isJoinning(bool value) {
+    _isJoinning = value;
   }
 
   String _apiKey = 'YOUR_OPENAI_KEY_HERE';
   String get apiKey => _apiKey;
-  set apiKey(String _value) {
-    _apiKey = _value;
+  set apiKey(String value) {
+    _apiKey = value;
   }
 
   String _modelName = 'gpt-4';
   String get modelName => _modelName;
-  set modelName(String _value) {
-    _modelName = _value;
+  set modelName(String value) {
+    _modelName = value;
   }
-}
-
-LatLng? _latLngFromString(String? val) {
-  if (val == null) {
-    return null;
-  }
-  final split = val.split(',');
-  final lat = double.parse(split.first);
-  final lng = double.parse(split.last);
-  return LatLng(lat, lng);
-}
-
-void _safeInit(Function() initializeField) {
-  try {
-    initializeField();
-  } catch (_) {}
-}
-
-Future _safeInitAsync(Function() initializeField) async {
-  try {
-    await initializeField();
-  } catch (_) {}
 }
